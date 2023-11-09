@@ -1,0 +1,35 @@
+MainWidget:
+
+<MainWidget>:
+    recycleView: recycleView
+    RecycleView:
+        id: recycleView
+        viewclass: 'ProdutoWidget'
+        RecycleBoxLayout:
+            default_size: None, dp(56)
+            default_size_hint: 1, None
+            size_hint_y: None
+            height: self.minimum_height
+            orientation: 'vertical'
+
+<ProdutoWidget>:
+    BoxLayout:
+        orientation: "horizontal"
+        BoxLayout:
+            orientation: "vertical"
+            Label:
+                text: "Foo"
+        BoxLayout:
+            orientation: "vertical"
+            BoxLayout:
+                orientation: "horizontal"
+                Label:
+                    text: root.nome
+                Label:
+                    text: str(root.vegetariano)
+            Label:
+                text: root.ingredientes
+        BoxLayout:
+            orientation: "horizontal"
+            Label:
+                text: str(root.preco)+"€"
