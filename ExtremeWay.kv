@@ -11,23 +11,40 @@ MainWidget:
             size_hint_y: None
             height: self.minimum_height
             orientation: 'vertical'
+            spacing: 10
+
+<LeftAlignLabel@Label>:
+    text_size: self.size
+    halign: "left"
+    valign: "center"
 
 <ProdutoWidget>:
     BoxLayout:
         orientation: "horizontal"
         BoxLayout:
             orientation: "vertical"
-            Label:
-                text: "Foo"
+            Image:
+                source: "images/sala_3.jpg"
+                # size_hint_x: 0.2
+                size: 200, 200
+                allow_stretch: False
+                
         BoxLayout:
             orientation: "vertical"
             BoxLayout:
                 orientation: "horizontal"
-                Label:
+                LeftAlignLabel:
                     text: root.nome
-                Label:
+
+                    canvas.before:
+                        Color:
+                            rgb: 0, 0, 1
+                        Rectangle:
+                            pos: self.pos
+                            size: self.size
+                LeftAlignLabel:
                     text: str(root.vegetariano)
-            Label:
+            LeftAlignLabel:
                 text: root.ingredientes
         BoxLayout:
             orientation: "horizontal"
