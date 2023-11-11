@@ -1,7 +1,16 @@
+#:import utils kivy.utils
+#:set color1 "#DD7835"
+#:set color2 "#D8D8D8"
+
 MainWidget:
+
+<CoverImage@CoverBehavior+Image>:
+    reference_size: self.texture_size
 
 <MainWidget>:
     recycleView: recycleView
+    CoverImage: 
+        source: "images/menu_background.jpg"
     RecycleView:
         id: recycleView
         viewclass: 'ProdutoWidget'
@@ -11,42 +20,64 @@ MainWidget:
             size_hint_y: None
             height: self.minimum_height
             orientation: 'vertical'
-            spacing: 10
+            spacing: dp(16)
 
 <LeftAlignLabel@Label>:
     text_size: self.size
     halign: "left"
     valign: "center"
+    canvas.before:
+        Color:
+            # rgb: utils.get_random_color()
+            rgba: 0, 0, 0, 0
+        Rectangle:
+            pos: self.pos
+            size: self.size
+
+<FitLabel@Label>:
+    size_hint: None, None
+    size: self.texture_size
+
+<Badge@FitLabel>:
+    color: 0, 0, 0, 1
+    bold: True
+    font_size: dp(10)
+    padding: dp(8), dp(3)
+    canvas.before:
+        Rectangle:
+            source: "images/badge.png"
+            pos: self.pos
+            size: self.size
+
 
 <ProdutoWidget>:
     BoxLayout:
         orientation: "horizontal"
-        BoxLayout:
-            orientation: "vertical"
-            Image:
-                source: "images/sala_3.jpg"
-                # size_hint_x: 0.2
-                size: 200, 200
-                allow_stretch: False
+        Image:
+            source: "images/sala_3.jpg"
+            size_hint_x: None
+            size_hint_y: 1
+            width: dp(100)
+            keep_ratio: True
+            allow_stretch: False
                 
         BoxLayout:
             orientation: "vertical"
             BoxLayout:
+                spacing: dp(10)
                 orientation: "horizontal"
-                LeftAlignLabel:
+                FitLabel:
+                    font_size: dp(22)
+                    bold: True
                     text: root.nome
-
-                    canvas.before:
-                        Color:
-                            rgb: 0, 0, 1
-                        Rectangle:
-                            pos: self.pos
-                            size: self.size
-                LeftAlignLabel:
-                    text: str(root.vegetariano)
+                Badge:
+                    text: "Vegetariano" if root.vegetariano else ""
             LeftAlignLabel:
                 text: root.ingredientes
-        BoxLayout:
-            orientation: "horizontal"
-            Label:
-                text: str(root.preco)+"€"
+                color: utils.get_color_from_hex(color2)
+
+        FitLabel:
+            color: utils.get_color_from_hex(color1)
+            font_size: dp(20)
+            text: str(root.preco)+"€"
+            

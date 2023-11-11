@@ -1,9 +1,11 @@
 from kivy.app import App
 from kivy.uix.boxlayout import BoxLayout
+from kivy.uix.floatlayout import FloatLayout
 from kivy.properties import (
     ObjectProperty, StringProperty, NumericProperty, BooleanProperty
 )
 from models import Produto
+from kivy.uix.behaviors import CoverBehavior  # usado em ExtremeWay.kv
 
 
 class ProdutoWidget(BoxLayout):
@@ -13,7 +15,7 @@ class ProdutoWidget(BoxLayout):
     vegetariano = BooleanProperty()
 
 
-class MainWidget(BoxLayout):
+class MainWidget(FloatLayout):
     recycleView = ObjectProperty(None)
 
     def __init__(self, **kwargs):
