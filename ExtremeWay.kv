@@ -9,18 +9,47 @@ MainWidget:
 
 <MainWidget>:
     recycleView: recycleView
-    CoverImage: 
+    CoverImage:
+        canvas.after:
+            Color:
+                rgba: 0, 0, 0, 0.6
+            Rectangle:
+                size: self.size
+                pos: self.pos
         source: "images/menu_background.jpg"
-    RecycleView:
-        id: recycleView
-        viewclass: 'ProdutoWidget'
-        RecycleBoxLayout:
-            default_size: None, dp(56)
-            default_size_hint: 1, None
-            size_hint_y: None
-            height: self.minimum_height
-            orientation: 'vertical'
-            spacing: dp(16)
+    BoxLayout:
+        orientation: "vertical"
+        Image:
+            source: "images/logo_branco_2.png"
+            allow_stretch: True
+            size_hint: None, None
+            size: dp(200), dp(110)
+            pos_hint: {"center_x": .5}
+        TitleLabel:
+            text: "Nossos Hamburgueres"
+        BoxLayout:
+            padding: dp(20), dp(20)
+            RecycleView:
+                id: recycleView
+                viewclass: 'ProdutoWidget'
+                RecycleBoxLayout:
+                    default_size: None, dp(120)
+                    default_size_hint: 1, None
+                    size_hint_y: None
+                    height: self.minimum_height
+                    orientation: 'vertical'
+                    spacing: dp(16)
+
+<TitleLabel@FitLabel>:
+    font_size: dp(22)
+    bold: True
+    padding: dp(16), dp(3)
+    canvas.before:
+        Color:
+            rgb: utils.get_color_from_hex(color1)
+        Rectangle:
+            pos: self.pos
+            size: self.size
 
 <LeftAlignLabel@Label>:
     text_size: self.size
@@ -53,15 +82,18 @@ MainWidget:
 <ProdutoWidget>:
     BoxLayout:
         orientation: "horizontal"
+        spacing: dp(10)
         Image:
             source: "images/sala_3.jpg"
             size_hint_x: None
             size_hint_y: 1
-            width: dp(100)
+            width: dp(120)
             keep_ratio: True
             allow_stretch: False
                 
         BoxLayout:
+            size_hint_max_x: dp(300)
+            size_hint_min_x: dp(150)
             orientation: "vertical"
             BoxLayout:
                 spacing: dp(10)
@@ -73,11 +105,12 @@ MainWidget:
                 Badge:
                     text: "Vegetariano" if root.vegetariano else ""
             LeftAlignLabel:
-                text: root.ingredientes
+                text: root.descricao_curta
                 color: utils.get_color_from_hex(color2)
 
         FitLabel:
             color: utils.get_color_from_hex(color1)
             font_size: dp(20)
-            text: str(root.preco)+"€"
+            text: str(root.preco_1)+"€"
+            pos_hint: {"top": .9}
             
