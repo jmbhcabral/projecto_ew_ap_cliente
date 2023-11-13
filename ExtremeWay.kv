@@ -92,11 +92,17 @@ MainWidget:
 
 
 <ProdutoWidget>:
+    # nome: ''
+    # descricao_curta: ''
+    # imagem: ''
+    # preco_1: 0
+    # vegetariano: False
+    # on_imagem: root.on_imagem(*args)
     BoxLayout:
         orientation: "horizontal"
         spacing: dp(10)
-        Image:
-            source: "http://192.168.25.6:8000/media/assets/Products/134393911_1GG.jpg"
+        AsyncImage:
+            source: root.imagem 
             size_hint_x: None
             size_hint_y: 1
             width: dp(120)

@@ -8,6 +8,7 @@ from models import Produto
 from kivy.uix.behaviors import CoverBehavior  # usado em ExtremeWay.kv
 from http_client import HttpClient
 from storage_manager import StorageManager
+from kivy.uix.image import AsyncImage
 
 
 class ProdutoWidget(BoxLayout):
@@ -16,6 +17,9 @@ class ProdutoWidget(BoxLayout):
     imagem = StringProperty()
     preco_1 = NumericProperty()
     vegetariano = BooleanProperty()
+
+    # def on_imagem(self, instance, value):
+    #     print("URL da imagem para", self.nome, ":", value)
 
 
 class MainWidget(FloatLayout):
@@ -30,7 +34,14 @@ class MainWidget(FloatLayout):
     def on_parent(self, widget, parent):
         produtos_list = StorageManager().load('produtos')
         if produtos_list:
-            self.recycleView.data = produtos_list
+            self.recycleView.data = [{
+                'nome': produto['nome'],
+                'descricao_curta': produto['descricao_curta'],
+                'imagem': produto['imagem'],
+                'preco_1': produto['preco_1'],
+                # Use .get para evitar KeyError
+                'vegetariano': produto.get('vegetariano', False)
+            } for produto in produtos_list]
 
     def on_server_data(self, produtos_list):
         self.recycleView.data = produtos_list
