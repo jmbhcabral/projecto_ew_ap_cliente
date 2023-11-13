@@ -1,28 +1,23 @@
 from kivy.network.urlrequest import UrlRequest
-import json
 
 
 class HttpClient:
-    def get_produtos(self, on_complete):
+    def get_produtos(self, on_complete, on_error):
         url = "http://127.0.0.1:8000/produtos/api/v1/"
-        print('get_produtos', url)
-
-        print(UrlRequest)
 
         def data_received(req, result):
-            # produtos_dict = []
-            # data = json.loads(result)
             produtos_dict = result['results']
-            # for i in result:
-            #     produtos_dict.append(i)
-            # print('data_received', result)
+
             if on_complete:
                 on_complete(produtos_dict)
 
-        def on_success(req, result):
-            print('Sucesso na requisição:', result)
+        def data_error(req, error):
+            if on_error:
+                on_error(str(error))
 
-        def on_error(req, error):
-            print('Erro na requisição:', error)
+        def data_failure(req, result):
+            if on_error:
+                on_error('Server Error: ' + str(req.resp_status))
 
-        req = UrlRequest(url, on_success=data_received, on_error=on_error)
+        req = UrlRequest(url, on_success=data_received,
+                         on_error=data_error, on_failure=data_failure)
