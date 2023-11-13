@@ -13,6 +13,7 @@ from storage_manager import StorageManager
 class ProdutoWidget(BoxLayout):
     nome = StringProperty()
     descricao_curta = StringProperty()
+    imagem = StringProperty()
     preco_1 = NumericProperty()
     vegetariano = BooleanProperty()
 
