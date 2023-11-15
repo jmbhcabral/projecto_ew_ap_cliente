@@ -31,7 +31,7 @@ class MainWidget(FloatLayout):
 
         HttpClient().get_produtos(self.on_server_data, self.on_server_error)
 
-    def on_parent(self, widget, parent):
+    def on_kv_post(self, base_widget):
         produtos_list = StorageManager().load('produtos')
         if produtos_list:
             self.recycleView.data = [{

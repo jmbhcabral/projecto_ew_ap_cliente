@@ -2,9 +2,46 @@
 #:set color1 "#DD7835"
 #:set color2 "#D8D8D8"
 #:import ementa ementa
+#:import navigation_screen_manager navigation_screen_manager
 
 
-MainWidget:
+MyScreenManager:
+
+<MyScreenManager@NavigationScreenManager>:
+    Screen:
+        name: "screen1"
+        BoxLayout:
+            Button:
+                text: "Ementa"
+                on_press: root.push("screen2")
+            Button:
+                text: "Area Clientes"
+                on_press: root.push("screen3")
+            Button:
+                text: "Ementa 2"
+                on_press: root.push("MainWidgetScreen")
+    Screen:
+        name: "screen2"
+        Button:
+            text: "Ementa"
+            on_press: root.pop()
+    Screen:
+        name: "screen3"
+        Button:
+            text: "Area Clientes"
+            on_press: root.pop()
+    Screen:
+        name: "MainWidgetScreen"
+        BoxLayout:
+            orientation: 'vertical'  # ou 'horizontal', dependendo do layout desejado
+            Button:
+                text: "back"
+                size_hint: 1, 0.1  # Ajuste conforme necessário
+                on_press: root.pop()
+            MainWidget:
+                size_hint: 1, 0.9  # Ajuste conforme necessário
+
+
 
 <CoverImage@CoverBehavior+Image>:
     reference_size: self.texture_size
@@ -133,5 +170,6 @@ MainWidget:
             font_size: dp(20)
             text: str(root.preco_1)+"€"
             pos_hint: {"top": .9}
+
 
             
