@@ -1,4 +1,5 @@
 from kivy.app import App
+from kivymd.theming import ThemeManager
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.floatlayout import FloatLayout
 from kivy.properties import (
@@ -53,6 +54,7 @@ class MainWidget(FloatLayout):
 
 
 class ExtremeWayApp(App):
+    theme_cls = ThemeManager()
     pass
 
 
