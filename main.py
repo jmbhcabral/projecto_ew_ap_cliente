@@ -1,15 +1,24 @@
-from kivy.app import App
-from kivymd.theming import ThemeManager
+from kivymd.app import MDApp
+from kivy.lang import Builder
+from kivy.uix.screenmanager import ScreenManager
 from kivy.uix.boxlayout import BoxLayout
-from kivy.uix.floatlayout import FloatLayout
 from kivy.properties import (
-    ObjectProperty, StringProperty, NumericProperty, BooleanProperty
-)
-from models import Produto
-from kivy.uix.behaviors import CoverBehavior  # usado em ExtremeWay.kv
+    ObjectProperty, StringProperty, NumericProperty, BooleanProperty)
+from kivy.uix.floatlayout import FloatLayout
 from http_client import HttpClient
 from storage_manager import StorageManager
+from kivy.uix.behaviors import CoverBehavior
 from kivy.uix.image import AsyncImage
+from models import Produto
+
+
+class Content(BoxLayout):
+    manager = ObjectProperty()
+    nav_drawer = ObjectProperty()
+
+
+class MenuScreen(ScreenManager):
+    pass
 
 
 class ProdutoWidget(BoxLayout):
@@ -18,9 +27,6 @@ class ProdutoWidget(BoxLayout):
     imagem = StringProperty()
     preco_1 = NumericProperty()
     vegetariano = BooleanProperty()
-
-    # def on_imagem(self, instance, value):
-    #     print("URL da imagem para", self.nome, ":", value)
 
 
 class MainWidget(FloatLayout):
@@ -53,9 +59,13 @@ class MainWidget(FloatLayout):
         self.error_str = "Error: " + error
 
 
-class ExtremeWayApp(App):
-    theme_cls = ThemeManager()
-    pass
+class MainApp(MDApp):
+    def build(self):
+        self.theme_cls.theme_style = "Dark"
+        self.theme_cls.primary_palette = "Amber"
+        Builder.load_file('ExtremeWay.kv')
+        return MenuScreen()
 
 
-ExtremeWayApp().run()
+if __name__ == '__main__':
+    MainApp().run()

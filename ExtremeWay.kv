@@ -1,175 +1,112 @@
-#:import utils kivy.utils
-#:set color1 "#DD7835"
-#:set color2 "#D8D8D8"
-#:import ementa ementa
-#:import navigation_screen_manager navigation_screen_manager
+#:import MDSeparator kivymd.uix.card.MDSeparator
+#:include screen_menu.kv
+
+# cor ambar - 1.0, 0.749, 0.0, 1
+# cor verde oliva - 0.502, 0.502, 0.0, 1
 
 
-MyScreenManager:
-
-<MyScreenManager@NavigationScreenManager>:
-    Screen:
-        name: "screen1"
+<Content>:
+    ScrollView:
         BoxLayout:
-            Button:
-                text: "Ementa"
-                on_press: root.push("screen2")
-            Button:
-                text: "Area Clientes"
-                on_press: root.push("screen3")
-            Button:
-                text: "Ementa 2"
-                on_press: root.push("MainWidgetScreen")
-    Screen:
-        name: "screen2"
-        Button:
-            text: "Ementa"
-            on_press: root.pop()
-    Screen:
-        name: "screen3"
-        Button:
-            text: "Area Clientes"
-            on_press: root.pop()
-    Screen:
-        name: "MainWidgetScreen"
-        BoxLayout:
-            orientation: 'vertical'  # ou 'horizontal', dependendo do layout desejado
-            Button:
-                text: "back"
-                size_hint: 1, 0.1  # Ajuste conforme necessário
-                on_press: root.pop()
-            MainWidget:
-                size_hint: 1, 0.9  # Ajuste conforme necessário
-
-
-
-<CoverImage@CoverBehavior+Image>:
-    reference_size: self.texture_size
-
-<MainWidget>:
-    recycleView: recycleView
-    CoverImage:
-        canvas.after:
-            Color:
-                rgba: 0, 0, 0, 0.6
-            Rectangle:
-                size: self.size
-                pos: self.pos
-        source: "images/menu_background.jpg"
-    BoxLayout:
-        orientation: "vertical"
-        Image:
-            source: "images/logo_branco_2.png"
-            allow_stretch: True
-            size_hint: None, None
-            size: dp(200), dp(110)
-            pos_hint: {"center_x": .5}
-        TitleLabel:
-            text: "Nossos Hamburgueres"
-        BoxLayout:
-            padding: dp(20), dp(20)
-            RecycleView:
-                id: recycleView
-                viewclass: 'ProdutoWidget'
-                RecycleBoxLayout:
-                    default_size: None, dp(120)
-                    default_size_hint: 1, None
-                    size_hint_y: None
-                    height: self.minimum_height
-                    orientation: 'vertical'
-                    spacing: dp(16)
-        Label:
-            text: root.error_str
-            size_hint: 1, None
-            height: dp(30) if len(root.error_str) > 0 else 0
-            font_size: dp(12)
-            bold: True
-            canvas.before:
-                Color:
-                    rgb: 1, 0, 0
-                Rectangle:
-                    pos: self.pos
-                    size: self.size
-
-<TitleLabel@FitLabel>:
-    font_size: dp(22)
-    bold: True
-    padding: dp(16), dp(3)
-    canvas.before:
-        Color:
-            rgb: utils.get_color_from_hex(color1)
-        Rectangle:
-            pos: self.pos
-            size: self.size
-
-<LeftAlignLabel@Label>:
-    text_size: self.size
-    halign: "left"
-    valign: "center"
-    canvas.before:
-        Color:
-            # rgb: utils.get_random_color()
-            rgba: 0, 0, 0, 0
-        Rectangle:
-            pos: self.pos
-            size: self.size
-
-<FitLabel@Label>:
-    size_hint: None, None
-    size: self.texture_size
-
-<Badge@FitLabel>:
-    color: 0, 0, 0, 1
-    bold: True
-    font_size: dp(10)
-    padding: dp(8), dp(3)
-    canvas.before:
-        Rectangle:
-            source: "images/badge.png"
-            pos: self.pos
-            size: self.size
-
-
-<ProdutoWidget>:
-    # nome: ''
-    # descricao_curta: ''
-    # imagem: ''
-    # preco_1: 0
-    # vegetariano: False
-    # on_imagem: root.on_imagem(*args)
-    BoxLayout:
-        orientation: "horizontal"
-        spacing: dp(10)
-        AsyncImage:
-            source: root.imagem 
-            size_hint_x: None
-            size_hint_y: 1
-            width: dp(120)
-            keep_ratio: True
-            allow_stretch: True
-                
-        BoxLayout:
-            size_hint_max_x: dp(300)
-            size_hint_min_x: dp(150)
             orientation: "vertical"
+            size_hint_y: None
+            height: dp(400)
+ 
             BoxLayout:
-                spacing: dp(10)
-                orientation: "horizontal"
-                FitLabel:
-                    font_size: dp(22)
-                    bold: True
-                    text: root.nome
-                Badge:
-                    text: "Vegetariano" if root.vegetariano else ""
-            LeftAlignLabel:
-                text: root.descricao_curta
-                color: utils.get_color_from_hex(color2)
+                orientation: "vertical"
+                
+                Image:
+                    source: "images/logo/logo_branco_2.png"
 
-        FitLabel:
-            color: utils.get_color_from_hex(color1)
-            font_size: dp(20)
-            text: str(root.preco_1)+"€"
-            pos_hint: {"top": .9}
+                MDList:
+                    OneLineListItem:
+                        text: "Inicio"
+                        on_release:
+                            root.nav_drawer.set_state("close")
+                            root.manager.current = "screen_inicio"
+
+                    OneLineListItem:
+                        text: "Menu"
+                        on_release:
+                            root.nav_drawer.set_state("close")
+                            root.manager.current = "screen_menu"
+
+                         
+                    OneLineListItem:
+                        text: "Área Cliente"
+                        on_release:
+                            root.nav_drawer.set_state("close")
+                            root.manager.current = "screen_clientes"
+                         
+                    OneLineListItem:
+                        text: "Fidelidade"
+                        on_release:
+                            root.nav_drawer.set_state("close")
+                            root.manager.current = "screen_fidelidade"
+                Label:
+                    size_hint_y: .1
+
+<MenuScreen>:
+    Screen:
+        MDTopAppBar:
+            pos_hint: {"top": 1}
+            title: "Extreme Way"
+            elevation: 8
+            left_action_items: [["menu", lambda x: nav_drawer.set_state("open")]]
+
+        MDNavigationLayout:
+            ScreenManager:
+                id: screen_manager
+                Screen:
+                    name: "screen_inicio"
+                    MDLabel:
+                        text: "Inicio"
+                        halign: "center"
+                Screen:
+                    name: "screen_menu"
+                    BoxLayout:
+                        orientation: 'vertical'  # ou 'horizontal', dependendo do layout desejado
+                        pos_hint: {'top': 0.9}
+                        size_hint_y: 0.9 
+                        MainWidget:
+                            size_hint: 1, 0.9  # Ajuste conforme necessário
+                Screen:
+                    name: "screen_clientes"
+                    BoxLayout:
+                        orientation: 'vertical'  # ou 'horizontal', dependendo do layout desejado
+                        size_hint: 1, 0.9
+                        Image:
+                            source: "images/icons/access-control.png"
+                            size_hint_x: 1
+                            size_hint_y: 1
+                            width: dp(120)
+                            pos_hint: {"center_x": 0.5, "top": 1}
+                        MDLabel:
+                            text: "Acesso área clientes"
+                            size_hint_x: None
+                            size_hint_y: 1
+                            bold: True
+                            pos_hint:{"center_x": 0.5, "center_y": 0}
+
+                        MDTextField:
+                            text: "username"
+                        MDTextField:
+                            text: "Password"
+                        Button:
+                            text: "Login"
+                            pos_hint:{"center_x": 0.5, "center_y": 0.3}
 
 
-            
+                Screen:
+                    name: "screen_fidelidade"
+                    MDLabel:
+                        text: "Fidelidade"
+                        halign: "center"
+        MDNavigationDrawer:
+            id: nav_drawer
+            radius: (0, 16, 16, 0)
+            md_bg_color: 0.502, 0.502, 0.0, .8
+            Content:
+                manager: screen_manager
+                nav_drawer: nav_drawer
+
