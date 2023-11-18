@@ -1,0 +1,72 @@
+
+<LoginScreen>:
+    FloatLayout:
+    
+        Image:
+            source: "images/icons/access-control.png"
+            size_hint: None, None
+            size_hint_min: dp(100), dp(100)
+            
+            pos_hint:{"center_x": 0.5, "center_y": 0.70}
+            
+        MDLabel:
+            text: "Acesso área clientes"
+            halign: "center"
+            font_style: "H6"
+            bold: True
+            pos_hint:{"center_x": 0.5, "center_y": 0.60}
+
+        MDLabel:
+            text: "Faça login para continuar."
+            halign: "center"
+            font_style: "Caption"
+            pos_hint:{"center_x": 0.5, "center_y": 0.57}
+
+        MDTextField:
+            hint_text: "Utilizador"
+            size_hint_x: 0.8
+            icon_right: "account"
+            icon_right_color: app.theme_cls.primary_color
+            pos_hint:{"center_x": 0.5, "center_y": 0.40}
+
+        MDTextField:
+            id: password_field
+            hint_text: "Password"
+            password: True
+            size_hint_x: 0.8
+            icon_right_color: app.theme_cls.primary_color
+            pos_hint:{"center_x": 0.5, "center_y": 0.30}
+        
+        MDIconButton:
+            id: toggle_icon
+            icon: "eye-off"
+            theme_icon_color: "Custom"
+            icon_color: app.theme_cls.primary_color     
+            pos_hint:{"center_x": 0.875, "center_y": 0.315}
+            on_release: root.toggle_password()
+
+        MDFillRoundFlatButton:
+            text: "Entrar"
+            font_size: 20
+            bold: True
+            elevation: 8
+            text_color: 0, 0, 0, 1
+            pos_hint:{"center_x": 0.5, "center_y": 0.20}
+            size_hint_x: 0.8
+
+        MDLabel:
+            text: "Se não tem conta"
+            font_style: "Caption"
+            halign: "center"
+            pos_hint:{"center_x": 0.5, "center_y": 0.13}
+
+        MDFillRoundFlatButton:
+            text: "Registar"
+            font_size: 20
+            bold: True
+            elevation: 8
+            text_color: 0, 0, 0, 1
+            pos_hint:{"center_x": 0.5, "center_y": 0.07}
+            size_hint_x: 0.5
+
+            

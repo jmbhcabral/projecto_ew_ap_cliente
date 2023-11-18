@@ -59,6 +59,20 @@ class MainWidget(FloatLayout):
         self.error_str = "Error: " + error
 
 
+class LoginScreen(FloatLayout):
+
+    def toggle_password(self):
+        password_field = self.ids.password_field
+        toggle_icon = self.ids.toggle_icon
+
+        password_field.password = not password_field.password
+
+        if password_field.password:
+            toggle_icon.icon = "eye-off"
+        else:
+            toggle_icon.icon = "eye"
+
+
 class MainApp(MDApp):
     def build(self):
         self.theme_cls.theme_style = "Dark"

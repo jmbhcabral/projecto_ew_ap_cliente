@@ -1,5 +1,6 @@
 #:import MDSeparator kivymd.uix.card.MDSeparator
 #:include screen_menu.kv
+#:include screen_login.kv
 
 # cor ambar - 1.0, 0.749, 0.0, 1
 # cor verde oliva - 0.502, 0.502, 0.0, 1
@@ -72,29 +73,7 @@
                             size_hint: 1, 0.9  # Ajuste conforme necessário
                 Screen:
                     name: "screen_clientes"
-                    BoxLayout:
-                        orientation: 'vertical'  # ou 'horizontal', dependendo do layout desejado
-                        size_hint: 1, 0.9
-                        Image:
-                            source: "images/icons/access-control.png"
-                            size_hint_x: 1
-                            size_hint_y: 1
-                            width: dp(120)
-                            pos_hint: {"center_x": 0.5, "top": 1}
-                        MDLabel:
-                            text: "Acesso área clientes"
-                            size_hint_x: None
-                            size_hint_y: 1
-                            bold: True
-                            pos_hint:{"center_x": 0.5, "center_y": 0}
-
-                        MDTextField:
-                            text: "username"
-                        MDTextField:
-                            text: "Password"
-                        Button:
-                            text: "Login"
-                            pos_hint:{"center_x": 0.5, "center_y": 0.3}
+                    LoginScreen:
 
 
                 Screen:
