@@ -36,4 +36,3 @@ class UtilizadorHomeScreen(Screen):
             self.ids.label_telefone.text = f"Telefone: {telefone}"
             self.ids.label_estudante.text = f"Estudante: {estudante}"
             self.ids.image_qrcode.source = qrcode_url
-            print('IMAGEM: ', qrcode_url)

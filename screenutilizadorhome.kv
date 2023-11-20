@@ -1,19 +1,26 @@
 <UtilizadorHomeScreen>:
-    BoxLayout:
-        orientation: 'vertical'
-        padding: 10
-        spacing: 10
+    FloatLayout:
 
-        Label:
+        MDLabel:
             id: label_boas_vindas
             text: 'Bem-vindo, '
             font_size: 24
-            size_hint_y: None
-            height: self.texture_size[1]
+            halign: "center"
+            valign: "middle"
+            size_hint_x: None  # Permitir dimensionamento manual
+            width: root.width * 0.8  # Largura de 80% do FloatLayout
+            text_size: self.width, None  # Ajustar o tamanho do texto
+            pos_hint: {"x": 0.1, "center_y": 0.85}  # Ajustar a posição horizontal e vertical
 
-        Label:
+        MDLabel:
             id: label_username
             text: 'Username: '
+            halign: "left"
+            valign: "middle"
+            size_hint_x: None  # Permitir dimensionamento manual
+            width: root.width * 0.8  # Largura de 80% do FloatLayout
+            text_size: self.width, None  # Ajustar o tamanho do texto
+            pos_hint: {"x": 0.1, "center_y": 0.75}  # Ajustar a posição horizontal e vertical
 
         Label:
             id: label_email
