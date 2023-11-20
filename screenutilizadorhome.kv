@@ -1,0 +1,38 @@
+<UtilizadorHomeScreen>:
+    BoxLayout:
+        orientation: 'vertical'
+        padding: 10
+        spacing: 10
+
+        Label:
+            id: label_boas_vindas
+            text: 'Bem-vindo, '
+            font_size: 24
+            size_hint_y: None
+            height: self.texture_size[1]
+
+        Label:
+            id: label_username
+            text: 'Username: '
+
+        Label:
+            id: label_email
+            text: 'Email: '
+
+        Label:
+            id: label_nome_completo
+            text: 'Nome Completo: '
+
+        Label:
+            id: label_telefone
+            text: 'Telefone: '
+
+        Label:
+            id: label_estudante
+            text: 'Estudante: '
+
+        AsyncImage:
+            id: image_qrcode
+            source: ''
+            size_hint_y: None
+            height: 200  # Ajuste conforme necessário

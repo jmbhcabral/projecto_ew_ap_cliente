@@ -1,6 +1,7 @@
 #:import MDSeparator kivymd.uix.card.MDSeparator
 #:include screen_menu.kv
 #:include screen_login.kv
+#:include screenutilizadorhome.kv
 
 # cor ambar - 1.0, 0.749, 0.0, 1
 # cor verde oliva - 0.502, 0.502, 0.0, 1
@@ -71,11 +72,11 @@
                         size_hint_y: 0.9 
                         MainWidget:
                             size_hint: 1, 0.9  # Ajuste conforme necessário
-                Screen:
+                LoginScreen:
                     name: "screen_clientes"
-                    LoginScreen:
-
-
+                    # LoginScreen:
+                UtilizadorHomeScreen:
+                    name: "screen_utilizador_home"
                 Screen:
                     name: "screen_fidelidade"
                     MDLabel:

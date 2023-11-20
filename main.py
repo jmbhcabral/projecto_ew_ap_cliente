@@ -1,5 +1,5 @@
 from kivymd.app import MDApp
-from kivy.lang import Builder
+# from kivy.lang import Builder
 from kivy.uix.screenmanager import ScreenManager
 from kivy.uix.boxlayout import BoxLayout
 from kivy.properties import (
@@ -10,6 +10,8 @@ from storage_manager import StorageManager
 from kivy.uix.behaviors import CoverBehavior
 from kivy.uix.image import AsyncImage
 from models import Produto
+from screen_login import LoginScreen
+from screenutilizadorhome import UtilizadorHomeScreen
 
 
 class Content(BoxLayout):
@@ -59,27 +61,13 @@ class MainWidget(FloatLayout):
         self.error_str = "Error: " + error
 
 
-class LoginScreen(FloatLayout):
-
-    def toggle_password(self):
-        password_field = self.ids.password_field
-        toggle_icon = self.ids.toggle_icon
-
-        password_field.password = not password_field.password
-
-        if password_field.password:
-            toggle_icon.icon = "eye-off"
-        else:
-            toggle_icon.icon = "eye"
-
-
-class MainApp(MDApp):
+class ExtremeWayApp(MDApp):
     def build(self):
         self.theme_cls.theme_style = "Dark"
         self.theme_cls.primary_palette = "Amber"
-        Builder.load_file('ExtremeWay.kv')
+        # Builder.load_file('ExtremeWay.kv')
         return MenuScreen()
 
 
 if __name__ == '__main__':
-    MainApp().run()
+    ExtremeWayApp().run()

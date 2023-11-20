@@ -21,20 +21,34 @@
             halign: "center"
             font_style: "Caption"
             pos_hint:{"center_x": 0.5, "center_y": 0.57}
+        
+        MDLabel:
+            id: error_label
+            halign: "center"
+            text: ''
+            color: 1, 0, 0, 1  # Vermelho
+            pos_hint: {"center_x": 0.5, "center_y": 0.45}    
 
         MDTextField:
+            id: username_field
             hint_text: "Utilizador"
             size_hint_x: 0.8
-            icon_right: "account"
-            icon_right_color: app.theme_cls.primary_color
+            on_text: root.on_username_or_password_change()
             pos_hint:{"center_x": 0.5, "center_y": 0.40}
+        
+        MDIconButton:
+            id: toggle_icon
+            icon: "account"
+            theme_icon_color: "Custom"
+            icon_color: app.theme_cls.primary_color     
+            pos_hint:{"center_x": 0.875, "center_y": 0.41}
 
         MDTextField:
             id: password_field
             hint_text: "Password"
             password: True
             size_hint_x: 0.8
-            icon_right_color: app.theme_cls.primary_color
+            on_text: root.on_username_or_password_change()
             pos_hint:{"center_x": 0.5, "center_y": 0.30}
         
         MDIconButton:
@@ -42,7 +56,7 @@
             icon: "eye-off"
             theme_icon_color: "Custom"
             icon_color: app.theme_cls.primary_color     
-            pos_hint:{"center_x": 0.875, "center_y": 0.315}
+            pos_hint:{"center_x": 0.875, "center_y": 0.31}
             on_release: root.toggle_password()
 
         MDFillRoundFlatButton:
@@ -53,6 +67,7 @@
             text_color: 0, 0, 0, 1
             pos_hint:{"center_x": 0.5, "center_y": 0.20}
             size_hint_x: 0.8
+            on_release: root.login()
 
         MDLabel:
             text: "Se não tem conta"
