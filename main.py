@@ -62,11 +62,27 @@ class MainWidget(FloatLayout):
 
 
 class ExtremeWayApp(MDApp):
+    is_logged_in = BooleanProperty(False)  # Rastreia o estado de login
+    login_icon = StringProperty("login-variant")
+
+    def set_logged_in(self, logged_in):
+        self.is_logged_in = logged_in
+        self.login_icon = "logout-variant" if logged_in else "login-variant"
+
     def build(self):
         self.theme_cls.theme_style = "Dark"
         self.theme_cls.primary_palette = "Amber"
         # Builder.load_file('ExtremeWay.kv')
         return MenuScreen()
+
+    def toggle_login(self):
+        if self.is_logged_in:
+            login_screen = self.root.ids.screen_manager.get_screen(
+                'screen_clientes')
+            login_screen.logout()
+        else:
+            # Lógica para mostrar a tela de login
+            self.root.ids.screen_manager.current = 'screen_clientes'
 
 
 if __name__ == '__main__':

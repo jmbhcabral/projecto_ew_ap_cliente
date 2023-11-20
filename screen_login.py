@@ -3,9 +3,15 @@ import requests
 import time
 from requests.exceptions import ConnectionError, Timeout
 from kivy.uix.screenmanager import Screen
+from kivy.app import App
 
 
 class LoginScreen(Screen):
+    def on_pre_enter(self, *args):
+        self.ids.username_field.text = ""
+        self.ids.password_field.text = ""
+        self.ids.error_label.text = ""
+
     def toggle_password(self):
         password_field = self.ids.password_field
         toggle_icon = self.ids.toggle_icon
@@ -39,6 +45,12 @@ class LoginScreen(Screen):
                     data = response.json()
                     self.token = data.get('access')
                     self.user_id = data.get('user_id')
+                    app_instance = App.get_running_app()
+                    if app_instance:
+                        print("Login: Obtendo a instância do aplicativo.")
+                        app_instance.set_logged_in(True)
+                    else:
+                        print("Não foi possível obter a instância do aplicativo.")
 
                     self.manager.current = 'screen_utilizador_home'
 
@@ -80,5 +92,13 @@ class LoginScreen(Screen):
         pass
 
     def logout(self):
+        print("Iniciando o processo de logout.")
         self.token = None
-        self.manager.current = 'screen_login'
+        app_instance = App.get_running_app()
+        if app_instance:
+            print("Logout: Obtendo a instância do aplicativo.")
+            # Isso atualizará o ícone para login
+            app_instance.set_logged_in(False)
+        else:
+            print("Não foi possível obter a instância do aplicativo.")
+        self.manager.current = 'screen_clientes'
