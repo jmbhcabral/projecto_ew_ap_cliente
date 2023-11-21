@@ -12,6 +12,7 @@ from kivy.uix.image import AsyncImage
 from models import Produto
 from screen_login import LoginScreen
 from screenutilizadorhome import UtilizadorHomeScreen
+from screen_registar import RegistarScreen
 
 
 class Content(BoxLayout):

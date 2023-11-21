@@ -1,6 +1,12 @@
 
 <LoginScreen>:
     FloatLayout:
+        canvas.before:
+            Color:
+                rgba: 0, 0, 0, 1
+            Rectangle:
+                pos: self.pos
+                size: self.size
     
         Image:
             source: "images/icons/access-control.png"
@@ -83,5 +89,7 @@
             text_color: 0, 0, 0, 1
             pos_hint:{"center_x": 0.5, "center_y": 0.07}
             size_hint_x: 0.5
+            on_release: 
+                root.manager.current = "screen_registar"
 
             

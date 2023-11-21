@@ -2,6 +2,7 @@
 #:include screen_menu.kv
 #:include screen_login.kv
 #:include screenutilizadorhome.kv
+#:include screen_registar.kv
 
 # cor ambar - 1.0, 0.749, 0.0, 1
 # cor verde oliva - 0.502, 0.502, 0.0, 1
@@ -82,6 +83,10 @@
                     MDLabel:
                         text: "Programa Fidelidade"
                         halign: "center"
+                RegistarScreen:
+                    name: "screen_registar"
+                    size_hint: 1, 0.9
+                    
         MDNavigationDrawer:
             id: nav_drawer
             radius: (0, 16, 16, 0)
