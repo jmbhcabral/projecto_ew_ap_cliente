@@ -1,11 +1,11 @@
 
 <ClickableTextFieldRound>:
+    
     size_hint_y: None
     height: password_label.height
 
     MDTextField:
         id: password_label
-        # mode: "round"
         hint_text: root.hint_text
         text: root.text
         password: True
@@ -20,15 +20,14 @@
         theme_text_color: "Hint"
         on_release:
             self.icon = "eye" if self.icon == "eye-off" else "eye-off"
-            password_label.password = False if text_field.password is True else True
+            password_label.password = False if password_label.password is True else True
 
 <ClickableTextFieldRound2>:
     size_hint_y: None
-    height: password_confirm_label.height
+    height: password2_label.height
 
     MDTextField:
-        id: password_confirm_label
-        # mode: "round"
+        id: password2_label
         hint_text: root.hint_text
         text: root.text
         password: True
@@ -39,18 +38,18 @@
     MDIconButton:
         icon: "eye-off"
         pos_hint: {"center_y": .5}
-        pos: password_confirm_label.width - self.width + dp(8), 0
+        pos: password2_label.width - self.width + dp(8), 0
         theme_text_color: "Hint"
         on_release:
             self.icon = "eye" if self.icon == "eye-off" else "eye-off"
-            password_confirm_label.password = False if text_field.password is True else True
+            password2_label.password = False if password2_label.password is True else True
 
 <ClickableDateField>:
     size_hint_y: None
-    height: date_field.height
+    height: data_nascimento_label.height
 
     MDTextField:
-        id: date_field
+        id: data_nascimento_label
         hint_text: root.hint_text
         text: root.text
         readonly: True
@@ -62,7 +61,7 @@
     MDIconButton:
         icon: "calendar-today"
         pos_hint: {"center_y": .5}
-        pos: date_field.width - self.width + dp(8), 0
+        pos: data_nascimento_label.width - self.width + dp(8), 0
         on_release: root.open_date_picker()    
 
 
@@ -91,7 +90,7 @@
                 padding_y: dp(20)
                 pos_hint:{"center_x": 0.5, "center_y": 0.5}
             MDTextField:
-                # mode: "round"
+                id: nome_label
                 hint_text: "Nome"
                 icon_right: "account"
                 size_hint_x: 0.8
@@ -99,7 +98,7 @@
                 font_size: dp(20)
                 padding_y: dp(10)
             MDTextField:
-                # mode: "round"
+                id: apelido_label
                 hint_text: "Apelido"
                 icon_right: "account"
                 size_hint_x: 0.8
@@ -107,7 +106,7 @@
                 font_size: dp(20)
                 padding_y: dp(10)
             MDTextField:
-                # mode: "round"
+                id: username_label
                 hint_text: "Username"
                 icon_right: "account"
                 size_hint_x: 0.8
@@ -115,7 +114,7 @@
                 font_size: dp(20)
                 padding_y: dp(10)
             MDTextField:
-                # mode: "round"
+                id: email_label
                 hint_text: "Email"
                 helper_text: "user@gmail.com"
                 validator: "email"
@@ -125,15 +124,17 @@
                 font_size: dp(20)
                 padding_y: dp(10)
             ClickableTextFieldRound:
+                id: password_round
                 size_hint_x: 0.8
                 hint_text: "Password"
                 pos_hint: {"center_x": .5, "center_y": .5}
             ClickableTextFieldRound2:
+                id: password2_round
                 size_hint_x: 0.8
                 hint_text: "Confirmar password"
                 pos_hint: {"center_x": .5, "center_y": .5}
             MDTextField:
-                # mode: "round"
+                id: telemovel_label
                 hint_text: "Telemóvel"
                 helper_text: "Número telemóvel"
                 icon_right: "phone"
@@ -142,16 +143,22 @@
                 font_size: dp(20)
                 padding_y: dp(10)
             ClickableDateField:
+                id: clickable_date
                 size_hint_x: 0.8
                 hint_text: "Data de Nascimento"
                 pos_hint:{"center_x": 0.5, "center_y": 0.5}
-            MDDrpDownItem:
+            MDTextField:
                 id: drop_item
                 hint_text: "Selecione uma opção"
+                size_hint_x: 0.8
                 pos_hint:{"center_x": 0.5, "center_y": 0.5}
                 readonly: True
-                on_focus: if self.focus: root.open_dropdown()
-
+                on_focus: if self.focus: root.manager.get_screen('screen_registar').menu_list()
+            MDRaisedButton:
+                text: "Registar"
+                size_hint_x: 0.8
+                pos_hint:{"center_x": 0.5, "center_y": 0.5}
+                on_release: root.register_user()
 
 
 
