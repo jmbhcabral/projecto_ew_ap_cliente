@@ -45,6 +45,27 @@
             self.icon = "eye" if self.icon == "eye-off" else "eye-off"
             password_confirm_label.password = False if text_field.password is True else True
 
+<ClickableDateField>:
+    size_hint_y: None
+    height: date_field.height
+
+    MDTextField:
+        id: date_field
+        hint_text: root.hint_text
+        text: root.text
+        readonly: True
+        font_size: dp(20)
+        padding_y: dp(10)
+        date_format: "dd/mm/yyyy"
+        validator: "date"
+
+    MDIconButton:
+        icon: "calendar-today"
+        pos_hint: {"center_y": .5}
+        pos: date_field.width - self.width + dp(8), 0
+        on_release: root.open_date_picker()    
+
+
 <RegistarScreen>:
     MDScrollView:
         BoxLayout:
@@ -120,6 +141,16 @@
                 pos_hint:{"center_x": 0.5, "center_y": 0.5}
                 font_size: dp(20)
                 padding_y: dp(10)
+            ClickableDateField:
+                size_hint_x: 0.8
+                hint_text: "Data de Nascimento"
+                pos_hint:{"center_x": 0.5, "center_y": 0.5}
+            MDDrpDownItem:
+                id: drop_item
+                hint_text: "Selecione uma opção"
+                pos_hint:{"center_x": 0.5, "center_y": 0.5}
+                readonly: True
+                on_focus: if self.focus: root.open_dropdown()
 
 
 
