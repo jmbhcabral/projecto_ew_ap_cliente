@@ -4,6 +4,8 @@ from kivy.properties import StringProperty
 from kivymd.uix.pickers import MDDatePicker
 from kivymd.uix.menu import MDDropdownMenu
 import requests
+import json
+from kivymd.uix.snackbar import Snackbar
 
 
 class RegistarScreen(Screen):
@@ -27,13 +29,13 @@ class RegistarScreen(Screen):
             },
             {
                 "viewclass": "OneLineListItem",
-                "text": "Sim no Agrup. Vasco Santana",
-                "on_release": lambda x="Sim no Agrup. Vasco Santana": self.set_item(x),
+                "text": "Sim, no Agrup. Vasco Santana",
+                "on_release": lambda x="Sim, no Agrup. Vasco Santana": self.set_item(x),
             },
             {
                 "viewclass": "OneLineListItem",
-                "text": "Sim noutra escola",
-                "on_release": lambda x="Sim noutra escola": self.set_item(x),
+                "text": "Sim, noutra escola",
+                "on_release": lambda x="Sim, noutra escola": self.set_item(x),
             },
             {
                 "viewclass": "OneLineListItem",
@@ -66,6 +68,19 @@ class RegistarScreen(Screen):
         data_nascimento = self.ids.clickable_date.ids.data_nascimento_label.text
         escola = self.ids.drop_item.text
 
+        if escola == "Sim, na Esc. Sec. Ramada":
+            escola = "escola_sec_ramada"
+        elif escola == "Sim, no Agrup. Vasco Santana":
+            escola = "agrup_vasco_santana"
+        elif escola == "Sim, noutra escola":
+            escola = "outra_escola"
+        elif escola == "Não":
+            escola = "nao"
+
+        if password != password2:
+            Snackbar(text="As senhas não coincidem.").open()
+            return
+
         print('Nome: ', nome)
         print('Apelido: ', apelido)
         print('Username: ', username)
@@ -77,16 +92,16 @@ class RegistarScreen(Screen):
         print('Escola: ', escola)
 
         data = {
-            'first_name': nome,
-            'last_name': apelido,
-            'username': username,
-            'email': email,
-            'password': password,
+            "username": username,
+            "password": password,
+            "email": email,
+            "first_name": nome,
+            "last_name": apelido,
             # 'password2': password2,
-            'perfil': {
-                'telemovel': telemovel,
-                'data_nascimento': data_nascimento,
-                'estudante': escola
+            "perfil": {
+                "data_nascimento": data_nascimento,
+                "telemovel": telemovel,
+                "estudante": escola
             }
         }
         print('Data: ', data)
@@ -94,18 +109,22 @@ class RegistarScreen(Screen):
         response = requests.post(
             'http://127.0.0.1:8000/users/api/v1/', json=data)
 
+        print('Response: ', response)
+        print(json.dumps(response.json(), indent=4))
+
         if response:
 
-            if response.status_code == 200:
+            if response.status_code == 201:
                 print('Utilizador registado com sucesso')
-                self.manager.current = 'screen_login'
+                self.manager.current = 'screen_inicio'
 
             else:
                 try:
                     error_message = response.json()
-                    print('Erro ao registar utilizador: ', error_message)
+                    print('Erro ao registar utilizador(error_message): ',
+                          error_message)
                 except ValueError:
-                    print('Erro ao registar utilizador: ', response.text)
+                    print('Erro ao registar utilizador(text): ', response.text)
 
 
 class ClickableTextFieldRound(MDRelativeLayout):
@@ -128,5 +147,5 @@ class ClickableDateField(MDRelativeLayout):
         date_dialog.open()
 
     def on_date_select(self, instance, value, date_range):
-        formated_date = value.strftime('%d-%m-%Y')
+        formated_date = value.strftime('%Y-%m-%d')
         self.text = formated_date
