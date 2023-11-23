@@ -77,23 +77,35 @@ class RegistarScreen(Screen):
         print('Escola: ', escola)
 
         data = {
-            'nome': nome,
-            'apelido': apelido,
+            'first_name': nome,
+            'last_name': apelido,
             'username': username,
             'email': email,
             'password': password,
-            'password2': password2,
-            'telemovel': telemovel,
-            'data_nascimento': data_nascimento,
-            'escola': escola
+            # 'password2': password2,
+            'perfil': {
+                'telemovel': telemovel,
+                'data_nascimento': data_nascimento,
+                'estudante': escola
+            }
         }
+        print('Data: ', data)
 
         response = requests.post(
-            'http://127.0.0.1:8000/users/api/v1', json=data)
+            'http://127.0.0.1:8000/users/api/v1/', json=data)
 
-        if response.status_code == 201:
-            print('Utilizador registado com sucesso')
-            self.manager.current = 'screen_login'
+        if response:
+
+            if response.status_code == 200:
+                print('Utilizador registado com sucesso')
+                self.manager.current = 'screen_login'
+
+            else:
+                try:
+                    error_message = response.json()
+                    print('Erro ao registar utilizador: ', error_message)
+                except ValueError:
+                    print('Erro ao registar utilizador: ', response.text)
 
 
 class ClickableTextFieldRound(MDRelativeLayout):
@@ -116,5 +128,5 @@ class ClickableDateField(MDRelativeLayout):
         date_dialog.open()
 
     def on_date_select(self, instance, value, date_range):
-        formated_date = value.strftime('%d/%m/%Y')
+        formated_date = value.strftime('%d-%m-%Y')
         self.text = formated_date
