@@ -5,6 +5,9 @@
     height: password_label.height
 
     MDTextField:
+        line_color_normal: self.error_color if self.error else (0.5, 0.5, 0.5, 1)
+        line_color_focus: self.error_color if self.error else (0, 0, 0, 1)
+        error_color: (1, 0, 0, 1)  # Vermelho
         id: password_label
         hint_text: root.hint_text
         text: root.text
@@ -27,6 +30,9 @@
     height: password2_label.height
 
     MDTextField:
+        line_color_normal: self.error_color if self.error else (0.5, 0.5, 0.5, 1)
+        line_color_focus: self.error_color if self.error else (0, 0, 0, 1)
+        error_color: (1, 0, 0, 1)  # Vermelho
         id: password2_label
         hint_text: root.hint_text
         text: root.text
@@ -49,6 +55,9 @@
     height: data_nascimento_label.height
 
     MDTextField:
+        line_color_normal: self.error_color if self.error else (0.5, 0.5, 0.5, 1)
+        line_color_focus: self.error_color if self.error else (0, 0, 0, 1)
+        error_color: (1, 0, 0, 1)  # Vermelho
         id: data_nascimento_label
         hint_text: root.hint_text
         text: root.text
@@ -90,6 +99,9 @@
                 padding_y: dp(20)
                 pos_hint:{"center_x": 0.5, "center_y": 0.5}
             MDTextField:
+                line_color_normal: self.error_color if self.error else (0.5, 0.5, 0.5, 1)
+                line_color_focus: self.error_color if self.error else (0, 0, 0, 1)
+                error_color: (1, 0, 0, 1)  # Vermelho
                 id: nome_label
                 hint_text: "Nome"
                 icon_right: "account"
@@ -98,25 +110,40 @@
                 font_size: dp(20)
                 padding_y: dp(10)
             MDTextField:
+                line_color_normal: self.error_color if self.error else (0.5, 0.5, 0.5, 1)
+                line_color_focus: self.error_color if self.error else (0, 0, 0, 1)
+                error_color: (1, 0, 0, 1)  # Vermelho
                 id: apelido_label
                 hint_text: "Apelido"
+                helper_text: "Digite o seu apelido."
                 icon_right: "account"
                 size_hint_x: 0.8
                 pos_hint:{"center_x": 0.5, "center_y": 0.5}
                 font_size: dp(20)
                 padding_y: dp(10)
             MDTextField:
+                line_color_normal: self.error_color if self.error else (0.5, 0.5, 0.5, 1)
+                line_color_focus: self.error_color if self.error else (0, 0, 0, 1)
+                error_color: (1, 0, 0, 1)  # Vermelho
                 id: username_label
                 hint_text: "Username"
+                helper_text: "Escolha um nome de utilizador."  # Mensagem de erro será definida pelo Python
+                helper_text_mode: "on_error"  # Mostra o helper_text quando o campo está em erro
+                on_text: root.reset_field('username_label', 'Escolha um nome de utilizador.')
                 icon_right: "account"
                 size_hint_x: 0.8
                 pos_hint:{"center_x": 0.5, "center_y": 0.5}
                 font_size: dp(20)
                 padding_y: dp(10)
             MDTextField:
+                line_color_normal: self.error_color if self.error else (0.5, 0.5, 0.5, 1)
+                line_color_focus: self.error_color if self.error else (0, 0, 0, 1)
+                error_color: (1, 0, 0, 1)  # Vermelho
                 id: email_label
                 hint_text: "Email"
+                helper_text_mode: "on_error"  # Mostra o helper_text quando o campo está em erro
                 helper_text: "user@gmail.com"
+                on_text: root.reset_field('email_label', 'user@gmail.com')
                 validator: "email"
                 icon_right: "email"
                 size_hint_x: 0.8
@@ -127,6 +154,9 @@
                 id: password_round
                 size_hint_x: 0.8
                 hint_text: "Password"
+                helper_text_mode: "on_error"
+                helper_text: "user@gmail.com"
+                on_text: root.reset_field('password_label', 'user@gmail.com')
                 pos_hint: {"center_x": .5, "center_y": .5}
             ClickableTextFieldRound2:
                 id: password2_round
@@ -134,6 +164,9 @@
                 hint_text: "Confirmar password"
                 pos_hint: {"center_x": .5, "center_y": .5}
             MDTextField:
+                line_color_normal: self.error_color if self.error else (0.5, 0.5, 0.5, 1)
+                line_color_focus: self.error_color if self.error else (0, 0, 0, 1)
+                error_color: (1, 0, 0, 1)  # Vermelho
                 id: telemovel_label
                 hint_text: "Telemóvel"
                 helper_text: "Número telemóvel"
@@ -148,6 +181,9 @@
                 hint_text: "Data de Nascimento"
                 pos_hint:{"center_x": 0.5, "center_y": 0.5}
             MDTextField:
+                line_color_normal: self.error_color if self.error else (0.5, 0.5, 0.5, 1)
+                line_color_focus: self.error_color if self.error else (0, 0, 0, 1)
+                error_color: (1, 0, 0, 1)  # Vermelho
                 id: drop_item
                 hint_text: "Selecione uma opção"
                 size_hint_x: 0.8
