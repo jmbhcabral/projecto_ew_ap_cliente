@@ -134,6 +134,7 @@ class RegistarScreen(Screen):
             try:
                 print('TRY')
                 error_messages = response.json()
+                print('Error messages: ', error_messages)
                 for field, messages in error_messages.items():
                     if field == "username":
                         self.ids.username_label.error = True
@@ -142,8 +143,15 @@ class RegistarScreen(Screen):
                         self.ids.email_label.error = True
                         self.ids.email_label.helper_text = messages[0]
                     elif field == "password":
-                        self.ids.password_label.error = True
-                        self.ids.password_label.helper_text = messages[0]
+                        self.ids.password_round.ids.password_label.error = True
+                        self.ids.password_round.ids.password_label.helper_text = messages[0]
+                    elif field == "perfil":
+                        # Acessa o dicionário aninhado 'perfil'
+                        perfil_fields = messages
+                        if "telemovel" in perfil_fields:
+                            self.ids.telemovel_label.error = True
+                            self.ids.telemovel_label.helper_text = \
+                                perfil_fields["telemovel"][0]
                     # Adicione condições semelhantes para outros campos
 
             except ValueError:

@@ -155,21 +155,25 @@
                 size_hint_x: 0.8
                 hint_text: "Password"
                 helper_text_mode: "on_error"
-                helper_text: "user@gmail.com"
-                on_text: root.reset_field('password_label', 'user@gmail.com')
+                on_text: root.reset_field('password_label', 'Digite uma password.')
                 pos_hint: {"center_x": .5, "center_y": .5}
             ClickableTextFieldRound2:
                 id: password2_round
                 size_hint_x: 0.8
                 hint_text: "Confirmar password"
+                helper_text_mode: "on_error"
+                on_text: root.reset_field('password_label', 'Confirmar password.')
                 pos_hint: {"center_x": .5, "center_y": .5}
             MDTextField:
                 line_color_normal: self.error_color if self.error else (0.5, 0.5, 0.5, 1)
                 line_color_focus: self.error_color if self.error else (0, 0, 0, 1)
                 error_color: (1, 0, 0, 1)  # Vermelho
                 id: telemovel_label
+                input_filter: "int"
                 hint_text: "Telemóvel"
+                helper_text_mode: "on_error"
                 helper_text: "Número telemóvel"
+                on_text: root.reset_field('telemovel_label', 'Número telemóvel')
                 icon_right: "phone"
                 size_hint_x: 0.8
                 pos_hint:{"center_x": 0.5, "center_y": 0.5}
