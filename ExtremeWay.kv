@@ -27,7 +27,7 @@
                         text: "Área Cliente" if app.is_logged_in else 'Login'
                         on_release:
                             root.nav_drawer.set_state("close")
-                            root.manager.current = "screenutilizadorhome" if app.is_logged_in else 'screen_clientes'
+                            root.manager.current = "screen_utilizador_home" if app.is_logged_in else 'screen_clientes'
                     
                     OneLineListItem:
                         text: "Inicio"
