@@ -1,0 +1,46 @@
+<UtilizadorHomeScreen>:
+    # FloatLayout:
+
+    MDLabel:
+
+        id: label_boas_vindas
+        text: ''
+        font_size: 24
+        halign: "center"
+        valign: "middle"
+        size_hint_x: None  # Permitir dimensionamento manual
+        width: root.width * 0.8  # Largura de 80% do FloatLayout
+        text_size: self.width, None  # Ajustar o tamanho do texto
+        pos_hint: {"x": 0.1, "center_y": 0.80}  # Ajustar a posição horizontal e vertical
+
+    MDLabel:
+        id: label_username
+        text: 'Username: '
+        halign: "left"
+        valign: "middle"
+        size_hint_x: None  # Permitir dimensionamento manual
+        width: root.width * 0.8  # Largura de 80% do FloatLayout
+        text_size: self.width, None  # Ajustar o tamanho do texto
+        pos_hint: {"x": 0.1, "center_y": 0.75}  # Ajustar a posição horizontal e vertical
+
+    Label:
+        id: label_email
+        text: 'Email: '
+
+    Label:
+        id: label_nome_completo
+        text: 'Nome Completo: '
+
+    Label:
+        id: label_telefone
+        text: 'Telefone: '
+
+    Label:
+        id: label_estudante
+        text: 'Estudante: '
+
+    AsyncImage:
+        id: image_qrcode
+        source: ''
+        size_hint_y: None
+        height: 200  # Ajuste conforme necessário

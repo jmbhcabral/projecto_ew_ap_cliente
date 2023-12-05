@@ -11,7 +11,7 @@ from kivy.uix.behaviors import CoverBehavior
 from kivy.uix.image import AsyncImage
 from models import Produto
 from screen_login import LoginScreen
-from screenutilizadorhome import UtilizadorHomeScreen
+from screen_utilizador_home import UtilizadorHomeScreen
 from screen_registar import RegistarScreen
 
 

@@ -29,7 +29,7 @@ class UtilizadorHomeScreen(Screen):
             estudante = user_data['perfil'].get('estudante')
             qrcode_url = user_data['perfil'].get('qrcode_url')
 
-            self.ids.label_boas_vindas.text = f"Bem-vindo, {first_name} {last_name}!"
+            self.ids.label_boas_vindas.text = f"Bem-vindo à Área do Cliente {first_name} {last_name}!\\n\\nAqui, você tem acesso a todos os benefícios e funcionalidades que a nossa aplicação oferece. Explore os diversos serviços e planos de fidelidade disponíveis, encontre as melhores ofertas perto de você e aproveite ofertas exclusivas para membros.\\n\\nNão se esqueça de atualizar o seu perfil para personalizar sua experiência e receber recomendações que correspondam aos seus interesses.\\n\\nSe precisar de ajuda ou tiver alguma dúvida, nossa equipe de suporte está sempre disponível para auxiliá-lo.\\n\\nAproveite ao máximo a sua experiência conosco!"
             self.ids.label_username.text = f"Username: {username}"
             self.ids.label_email.text = f"Email: {email}"
             self.ids.label_nome_completo.text = f"Nome Completo: {first_name} {last_name}"
