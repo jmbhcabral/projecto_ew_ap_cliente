@@ -1,6 +1,7 @@
 # from kivy.uix.floatlayout import FloatLayout
 import requests
 import time
+from utils.singleton import UserDataSingleton
 from requests.exceptions import ConnectionError, Timeout
 from kivy.uix.screenmanager import Screen
 from kivy.app import App
@@ -43,14 +44,21 @@ class LoginScreen(Screen):
                 response = requests.post(url, data=data)
                 if response.status_code == 200:
                     data = response.json()
-                    self.token = data.get('access')
-                    self.user_id = data.get('user_id')
+                    token = data.get('access')
+                    user_id = data.get('user_id')
+
+                    # configurar o singleton com o token e o user_id
+                    user_data_singleton = UserDataSingleton.get_instance()
+                    user_data_singleton.set_user_credentials(token, user_id)
+
                     app_instance = App.get_running_app()
                     if app_instance:
                         print("Login: Obtendo a instância do aplicativo.")
                         app_instance.set_logged_in(True)
                     else:
-                        print("Não foi possível obter a instância do aplicativo.")
+                        print(
+                            "Não foi possível obter a instância do aplicativo."
+                        )
 
                     self.manager.current = 'screen_utilizador_home'
 
@@ -76,24 +84,30 @@ class LoginScreen(Screen):
                 print(f"Erro desconhecido: {e}")
                 break
 
-    def fetch_user_data(self, token):
-        url = "http://127.0.0.1:8000/users/api/v1/"
-        headers = {'Authorization': f'Bearer {token}'}
-        response = requests.get(url, headers=headers)
-        if response.status_code == 200:
-            user_data = response.json()
-            return user_data
-        else:
-            self.show_error_message(
-                "Não foi possível obter os dados do utilizador.")
-            return None
+    # def fetch_user_data(self, token):
+    #     url = "http://127.0.0.1:8000/users/api/v1/"
+    #     headers = {'Authorization': f'Bearer {token}'}
+    #     response = requests.get(url, headers=headers)
+    #     if response.status_code == 200:
+    #         user_data = response.json()
+    #         return user_data
+    #     else:
+    #         self.show_error_message(
+    #             "Não foi possível obter os dados do utilizador.")
+    #         return None
 
     def on_enter(self, *args):
         pass
 
     def logout(self):
         print("Iniciando o processo de logout.")
-        self.token = None
+        self.manager.current = 'screen_clientes'
+
+        # Limpar as credenciais do usuário
+        user_data_singleton = UserDataSingleton.get_instance()
+        user_data_singleton.clear_user_credentials()
+
+        # Atualizar o ícone de login
         app_instance = App.get_running_app()
         if app_instance:
             print("Logout: Obtendo a instância do aplicativo.")
@@ -101,4 +115,3 @@ class LoginScreen(Screen):
             app_instance.set_logged_in(False)
         else:
             print("Não foi possível obter a instância do aplicativo.")
-        self.manager.current = 'screen_clientes'
