@@ -1,0 +1,57 @@
+
+<ScreenInicio>:
+    MDScrollView:
+        canvas.before:
+            Color:
+                rgba: 0, 0, 0, 1
+            Rectangle:
+                size: self.size
+                pos: self.pos
+        BoxLayout:
+            orientation: "vertical"
+            spacing: dp(20)
+            size_hint_y: None  # Isso é crucial
+            height: self.minimum_height
+            MDLabel:
+                text: 'Bem-Vindo ao Extreme Way!'
+                halign: 'center'
+                font_style: 'H5'
+                valign: "middle"
+                size_hint_y: None
+                height: self.texture_size[1]  # Altura baseada no tamanho do texto
+                text_size: self.width - dp(32), None
+
+            MDLabel:
+                text: 'Descubra Hambúrgueres Inesquecíveis!'
+                halign: 'center'
+                font_style: 'Subtitle1'
+                valign: "middle"
+                size_hint_y: None
+                height: self.texture_size[1]  # Altura baseada no tamanho do texto
+                text_size: self.width - dp(32), None
+
+            MDLabel:
+                text: 'Aqui, cada mordida é uma nova aventura! Nossos hambúrgueres são criados com ingredientes frescos e uma pitada de criatividade, garantindo sabores que você nunca experimentou antes. Venha explorar um mundo de delícias culinárias e transforme cada refeição em um momento especial.'
+                halign: 'center'
+                font_style: 'Body1'
+                valign: "middle"
+                size_hint_y: None
+                height: self.texture_size[1]  # Altura baseada no tamanho do texto
+                text_size: self.width - dp(32), None
+            MDLabel:
+                text: 'Sabor e Qualidade Sem Igual!'
+                halign: 'center'
+                font_style: 'Subtitle2'
+                valign: "middle"
+                size_hint_y: None
+                height: self.texture_size[1]  # Altura baseada no tamanho do texto
+                text_size: self.width - dp(32), None
+
+            MDLabel:
+                text: 'Junte-se a nós nessa jornada de sabor!'
+                halign: 'center'
+                font_style: 'Body2'
+                valign: "middle"
+                size_hint_y: None
+                height: self.texture_size[1]  # Altura baseada no tamanho do texto
+                text_size: self.width - dp(32), None

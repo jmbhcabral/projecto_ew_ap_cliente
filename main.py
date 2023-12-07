@@ -13,6 +13,10 @@ from models import Produto
 from screen_login import LoginScreen
 from screen_utilizador_home import UtilizadorHomeScreen
 from screen_registar import RegistarScreen
+from screen_inicio import ScreenInicio
+from screen_acerca_de import ScreenAcercaDe
+from screen_programa_fidelidade import ScreenProgramaFidelidade
+from screen_suporte import ScreenSuporte
 
 
 class Content(BoxLayout):

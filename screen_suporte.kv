@@ -1,0 +1,21 @@
+
+<ScreenSuporte>:
+    MDScrollView:
+        canvas.before:
+            Color:
+                rgba: 0, 0, 0, 1
+            Rectangle:
+                size: self.size
+                pos: self.pos
+        BoxLayout:
+            orientation: "vertical"
+            spacing: dp(20)
+            size_hint_y: None  # Isso é crucial
+            height: self.minimum_height
+            MDRaisedButton:
+                text: "Envie-nos um E-mail"
+                on_release: root.open_email()
+
+            MDRaisedButton:
+                text: "Ligue para o Suporte"
+                on_release: root.open_phone_dialer()

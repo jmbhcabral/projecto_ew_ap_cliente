@@ -1,8 +1,12 @@
 #:import MDSeparator kivymd.uix.card.MDSeparator
+#:include screen_inicio.kv
+#:include screen_acerca_de.kv
+#:include screen_programa_fidelidade.kv
 #:include screen_menu.kv
 #:include screen_login.kv
 #:include screen_utilizador_home.kv
 #:include screen_registar.kv
+#:include screen_suporte.kv
 
 # cor ambar - 1.0, 0.749, 0.0, 1
 # cor verde oliva - 0.502, 0.502, 0.0, 1
@@ -29,12 +33,19 @@
                             root.nav_drawer.set_state("close")
                             root.manager.current = "screen_utilizador_home" if app.is_logged_in else 'screen_clientes'
                     
+
                     OneLineListItem:
                         text: "Inicio"
                         on_release:
                             root.nav_drawer.set_state("close")
                             root.manager.current = "screen_inicio"
-
+                    
+                    OneLineListItem:
+                        text: "Acerca de nós"
+                        on_release:
+                            root.nav_drawer.set_state("close")
+                            root.manager.current = "screen_acerca_de"
+                            
                     OneLineListItem:
                         text: "Menu"
                         on_release:
@@ -46,6 +57,11 @@
                         on_release:
                             root.nav_drawer.set_state("close")
                             root.manager.current = "screen_programa_fidelidade"
+                    OneLineListItem:
+                        text: "Suporte"
+                        on_release:
+                            root.nav_drawer.set_state("close")
+                            root.manager.current = "screen_suporte"
                 Label:
                     size_hint_y: .1
 
@@ -60,11 +76,18 @@
         MDNavigationLayout:
             ScreenManager:
                 id: screen_manager
-                Screen:
+                ScreenInicio:
                     name: "screen_inicio"
-                    MDLabel:
-                        text: "Inicio"
-                        halign: "center"
+                    size_hint: 1, 0.9
+                ScreenAcercaDe:
+                    name: "screen_acerca_de"
+                    size_hint: 1, 0.9
+                ScreenProgramaFidelidade:
+                    name: "screen_programa_fidelidade"
+                    size_hint: 1, 0.9
+                ScreenSuporte:
+                    name: "screen_suporte"
+                    size_hint: 1, 0.9
                 Screen:
                     name: "screen_menu"
                     BoxLayout:
@@ -79,11 +102,6 @@
                 UtilizadorHomeScreen:
                     name: "screen_utilizador_home"
                     size_hint: 1, 0.9
-                Screen:
-                    name: "screen_programa_fidelidade"
-                    MDLabel:
-                        text: "Programa Fidelidade"
-                        halign: "center"
                 RegistarScreen:
                     name: "screen_registar"
                     size_hint: 1, 0.9
