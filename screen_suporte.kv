@@ -12,10 +12,67 @@
             spacing: dp(20)
             size_hint_y: None  # Isso é crucial
             height: self.minimum_height
+            MDLabel:
+                text: 'Precisa de Ajuda? Estamos Aqui para Si!'
+                halign: 'center'
+                font_style: 'H5'
+                bold: True
+                valign: "middle"
+                size_hint_y: None
+                height: self.texture_size[1]  # Altura baseada no tamanho do texto
+                text_size: self.width - dp(32), None
+            MDLabel:
+                text: 'Na Extreme Way, o seu conforto e satisfação são a nossa prioridade. Se tem dúvidas, sugestões ou necessita de suporte, a nossa equipa está pronta a ajudar.'
+                halign: 'center'
+                font_style: 'Body1'
+                bold: True
+                valign: "middle"
+                size_hint_y: None
+                height: self.texture_size[1]  # Altura baseada no tamanho do texto
+                text_size: self.width - dp(32), None
+            MDLabel:
+                text: 'Como Podemos Auxiliar?'
+                halign: 'center'
+                font_style: 'Subtitle1'
+                bold: True
+                valign: "middle"
+                size_hint_y: None
+                height: self.texture_size[1]  # Altura baseada no tamanho do texto
+                text_size: self.width - dp(32), None
+            MDLabel:
+                text: 'Quer seja uma questão sobre o menu, um comentário sobre o nosso serviço, ou apoio com o Programa de Fidelidade, queremos ouvi-lo. A sua opinião é valiosa para nós e ajuda-nos a melhorar constantemente.'
+                halign: 'center'
+                font_style: 'Body1'
+                bold: True
+                valign: "middle"
+                size_hint_y: None
+                height: self.texture_size[1]  # Altura baseada no tamanho do texto
+                text_size: self.width - dp(32), None
+            MDLabel:
+                text: 'Contacto Rápido por E-mail'
+                halign: 'center'
+                font_style: 'Subtitle1'
+                bold: True
+                valign: "middle"
+                size_hint_y: None
+                height: self.texture_size[1]  # Altura baseada no tamanho do texto
+                text_size: self.width - dp(32), None
+            MDLabel:
+                text: 'Para entrar em contacto connosco de forma rápida e fácil, basta clicar no link abaixo e enviar-nos um e-mail. A nossa equipa de suporte responderá o mais breve possível.'
+                halign: 'center'
+                font_style: 'Body1'
+                bold: True
+                valign: "middle"
+                size_hint_y: None
+                height: self.texture_size[1]  # Altura baseada no tamanho do texto
+                text_size: self.width - dp(32), None
             MDRaisedButton:
                 text: "Envie-nos um E-mail"
+                bold: True
+                pos_hint: {"center_x": 0.5, "center_y": 0.5}
                 on_release: root.open_email()
-
             MDRaisedButton:
                 text: "Ligue para o Suporte"
+                bold: True
+                pos_hint: {"center_x": 0.5, "center_y": 0.5}
                 on_release: root.open_phone_dialer()

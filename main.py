@@ -23,6 +23,10 @@ class Content(BoxLayout):
     manager = ObjectProperty()
     nav_drawer = ObjectProperty()
 
+    def logout(self):
+        login_screen = self.manager.get_screen('screen_clientes')
+        login_screen.logout()
+
 
 class MenuScreen(ScreenManager):
     pass

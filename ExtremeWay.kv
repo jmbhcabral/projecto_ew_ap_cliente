@@ -28,7 +28,7 @@
 
                 MDList:
                     OneLineListItem:
-                        text: "Área Cliente" if app.is_logged_in else 'Login'
+                        text: "Área Cliente" if app.is_logged_in else 'Login/Registar'
                         on_release:
                             root.nav_drawer.set_state("close")
                             root.manager.current = "screen_utilizador_home" if app.is_logged_in else 'screen_clientes'
@@ -62,6 +62,11 @@
                         on_release:
                             root.nav_drawer.set_state("close")
                             root.manager.current = "screen_suporte"
+                    OneLineListItem:
+                        text: "Logout" if app.is_logged_in else ""
+                        on_release:
+                            root.nav_drawer.set_state("close")
+                            root.logout()
                 Label:
                     size_hint_y: .1
 
