@@ -1,0 +1,55 @@
+
+<ClickableDateField>:
+    size_hint_y: None
+    height: data_nascimento_label.height
+
+    MDTextField:
+        line_color_normal: self.error_color if self.error else (0.5, 0.5, 0.5, 1)
+        line_color_focus: self.error_color if self.error else (0, 0, 0, 1)
+        error_color: (1, 0, 0, 1)  # Vermelho
+        id: data_nascimento_label
+        # hint_text: root.hint_text
+        # text: root.text
+        readonly: True
+        font_size: dp(20)
+        padding_y: dp(10)
+        date_format: "dd/mm/yyyy"
+        validator: "date"
+
+    MDIconButton:
+        icon: "calendar-today"
+        pos_hint: {"center_y": .5}
+        pos: data_nascimento_label.width - self.width + dp(8), 0
+        on_release: root.open_date_picker()
+
+<ScreenDadosPessoais>:
+    canvas.before:
+        Color:
+            rgba: 0, 0, 0, 1
+        Rectangle:
+            size: self.size
+            pos: self.pos
+    BoxLayout:
+        orientation: "vertical"
+        spacing: dp(20)
+        padding: dp(20)
+        MDTextField:
+            id: first_name_label
+            hint_text: 'Nome'
+        MDTextField:
+            id: last_name_label
+            hint_text: 'Apelido'
+        MDTextField:
+            id: username_label
+            readonly: True
+            hint_text: 'Username'
+            help_text: 'Não é possível alterar'
+        MDTextField:
+            id: email_label
+            hint_text: 'Email'
+        MDTextField:
+            id: telemovel_label
+            hint_text: 'Telemovel'
+        ClickableDateField:
+            id: clickable_date
+            hint_text: "Data de Nascimento"

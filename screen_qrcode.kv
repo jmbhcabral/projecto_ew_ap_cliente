@@ -1,0 +1,24 @@
+
+<ScreenQRCode>:
+    canvas.before:
+        Color:
+            rgba: 0, 0, 0, 1
+        Rectangle:
+            size: self.size
+            pos: self.pos
+    BoxLayout:
+        orientation: "vertical"
+        spacing: dp(20)
+        padding: dp(20)
+        #size_hint_y: None  
+        #height: self.minimum_height
+        AsyncImage:
+            id: image_qrcode
+            source: ''  
+            size_hint: 1, 1 
+            # width: dp(400)  
+            # height: dp(400)  
+            keep_ratio: True
+            allow_stretch: True
+            # pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                 

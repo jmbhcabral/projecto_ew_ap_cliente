@@ -5,6 +5,8 @@
 #:include screen_menu.kv
 #:include screen_login.kv
 #:include screen_utilizador_home.kv
+#:include screen_qrcode.kv
+#:include screen_dados_pessoais.kv
 #:include screen_registar.kv
 #:include screen_suporte.kv
 
@@ -18,57 +20,67 @@
         BoxLayout:
             orientation: "vertical"
             size_hint_y: None
-            height: dp(400)
- 
-            BoxLayout:
-                orientation: "vertical"
+            height: self.minimum_height
+
+            MDList:
+                OneLineListItem:
+                    text: "Área Cliente" if app.is_logged_in else 'Login/Registar'
+                    # size_hint_y: 1
+                    on_release:
+                        root.nav_drawer.set_state("close")
+                        root.manager.current = "screen_utilizador_home" if app.is_logged_in else 'screen_clientes'
+            
+                OneLineListItem:
+                    text: "Dados Pessoais" if app.is_logged_in else ""
+                    # size_hint_y: None if not app.is_logged_in else 1
+                    height: 0 if not app.is_logged_in else dp(48)
+                    on_release:
+                        root.nav_drawer.set_state("close")
+                        root.manager.current = "screen_dados_pessoais"
+
+                OneLineListItem:
+                    text: "QrCode" if app.is_logged_in else ""
+                    # size_hint_y: None if not app.is_logged_in else 1
+                    height: 0 if not app.is_logged_in else dp(48)
+                    on_release:
+                        root.nav_drawer.set_state("close")
+                        root.manager.current = "screen_qrcode"
                 
-                Image:
-                    source: "images/logo/logo_branco_2.png"
-
-                MDList:
-                    OneLineListItem:
-                        text: "Área Cliente" if app.is_logged_in else 'Login/Registar'
-                        on_release:
-                            root.nav_drawer.set_state("close")
-                            root.manager.current = "screen_utilizador_home" if app.is_logged_in else 'screen_clientes'
-                    
-
-                    OneLineListItem:
-                        text: "Inicio"
-                        on_release:
-                            root.nav_drawer.set_state("close")
-                            root.manager.current = "screen_inicio"
-                    
-                    OneLineListItem:
-                        text: "Acerca de nós"
-                        on_release:
-                            root.nav_drawer.set_state("close")
-                            root.manager.current = "screen_acerca_de"
-                            
-                    OneLineListItem:
-                        text: "Menu"
-                        on_release:
-                            root.nav_drawer.set_state("close")
-                            root.manager.current = "screen_menu"
-                         
-                    OneLineListItem:
-                        text: "Programa Fidelidade"
-                        on_release:
-                            root.nav_drawer.set_state("close")
-                            root.manager.current = "screen_programa_fidelidade"
-                    OneLineListItem:
-                        text: "Suporte"
-                        on_release:
-                            root.nav_drawer.set_state("close")
-                            root.manager.current = "screen_suporte"
-                    OneLineListItem:
-                        text: "Logout" if app.is_logged_in else ""
-                        on_release:
-                            root.nav_drawer.set_state("close")
-                            root.logout()
-                Label:
-                    size_hint_y: .1
+                OneLineListItem:
+                    text: "Inicio"
+                    on_release:
+                        root.nav_drawer.set_state("close")
+                        root.manager.current = "screen_inicio"
+                
+                OneLineListItem:
+                    text: "Acerca de nós"
+                    on_release:
+                        root.nav_drawer.set_state("close")
+                        root.manager.current = "screen_acerca_de"
+                        
+                OneLineListItem:
+                    text: "Menu"
+                    on_release:
+                        root.nav_drawer.set_state("close")
+                        root.manager.current = "screen_menu"
+                        
+                OneLineListItem:
+                    text: "Programa Fidelidade"
+                    on_release:
+                        root.nav_drawer.set_state("close")
+                        root.manager.current = "screen_programa_fidelidade"
+                OneLineListItem:
+                    text: "Suporte"
+                    on_release:
+                        root.nav_drawer.set_state("close")
+                        root.manager.current = "screen_suporte"
+                OneLineListItem:
+                    text: "Logout" if app.is_logged_in else ""
+                    on_release:
+                        root.nav_drawer.set_state("close")
+                        root.logout()
+            Label:
+                size_hint_y: .1
 
 <MenuScreen>:
     Screen:
@@ -109,6 +121,12 @@
                     size_hint: 1, 0.9
                 RegistarScreen:
                     name: "screen_registar"
+                    size_hint: 1, 0.9
+                ScreenQRCode:
+                    name: "screen_qrcode"
+                    size_hint: 1, 0.9
+                ScreenDadosPessoais:
+                    name: "screen_dados_pessoais"
                     size_hint: 1, 0.9
                     
                     

@@ -17,6 +17,8 @@ from screen_inicio import ScreenInicio
 from screen_acerca_de import ScreenAcercaDe
 from screen_programa_fidelidade import ScreenProgramaFidelidade
 from screen_suporte import ScreenSuporte
+from screen_qrcode import ScreenQRCode
+from screen_dados_pessoais import ScreenDadosPessoais
 
 
 class Content(BoxLayout):
