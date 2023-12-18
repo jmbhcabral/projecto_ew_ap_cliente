@@ -23,33 +23,82 @@
         on_release: root.open_date_picker()
 
 <ScreenDadosPessoais>:
-    canvas.before:
-        Color:
-            rgba: 0, 0, 0, 1
-        Rectangle:
-            size: self.size
-            pos: self.pos
-    BoxLayout:
-        orientation: "vertical"
-        spacing: dp(20)
-        padding: dp(20)
-        MDTextField:
-            id: first_name_label
-            hint_text: 'Nome'
-        MDTextField:
-            id: last_name_label
-            hint_text: 'Apelido'
-        MDTextField:
-            id: username_label
-            readonly: True
-            hint_text: 'Username'
-            help_text: 'Não é possível alterar'
-        MDTextField:
-            id: email_label
-            hint_text: 'Email'
-        MDTextField:
-            id: telemovel_label
-            hint_text: 'Telemovel'
-        ClickableDateField:
-            id: clickable_date
-            hint_text: "Data de Nascimento"
+    MDScrollView:
+        BoxLayout:
+            canvas.before:
+                Color:
+                    rgba: 0, 0, 0, 1
+                Rectangle:
+                    size: self.size
+                    pos: self.pos
+            orientation: "vertical"
+            size_hint_y: None
+            height: self.minimum_height
+            spacing: dp(20)
+            padding: dp(20)
+            MDTextField:
+                line_color_normal: self.error_color if self.error else (0.5, 0.5, 0.5, 1)
+                line_color_focus: self.error_color if self.error else (0, 0, 0, 1)
+                error_color: (1, 0, 0, 1)  # Vermelho
+                id: first_name_label
+                hint_text: 'Nome'
+                icon_right: "account"
+                font_size: dp(20)
+                padding_y: dp(10)
+            MDTextField:
+                line_color_normal: self.error_color if self.error else (0.5, 0.5, 0.5, 1)
+                line_color_focus: self.error_color if self.error else (0, 0, 0, 1)
+                error_color: (1, 0, 0, 1)  # Vermelho
+                id: last_name_label
+                hint_text: 'Apelido'
+                icon_right: "account"
+                font_size: dp(20)
+                padding_y: dp(10)
+            MDTextField:
+                id: username_label
+                readonly: True
+                hint_text: 'Username'
+                help_text: 'Não é possível alterar'
+                helper_text: 'Não é possível alterar'
+                icon_right: 'account'
+                font_size: dp(20)
+                padding_y: dp(10)
+            MDTextField:
+                line_color_normal: self.error_color if self.error else (0.5, 0.5, 0.5, 1)
+                line_color_focus: self.error_color if self.error else (0, 0, 0, 1)
+                error_color: (1, 0, 0, 1)  # Vermelho
+                id: email_label
+                hint_text: 'Email'
+                helper_text_mode: "on_error"  # Mostra o helper_text quando o campo está em erro
+                helper_text: "user@gmail.com"
+                validator: "email"
+                icon_right: "email"
+                font_size: dp(20)
+                padding_y: dp(10)
+            MDTextField:
+                line_color_normal: self.error_color if self.error else (0.5, 0.5, 0.5, 1)
+                line_color_focus: self.error_color if self.error else (0, 0, 0, 1)
+                error_color: (1, 0, 0, 1)  # Vermelho
+                input_filter: 'int'
+                id: telemovel_label
+                hint_text: 'Telemovel'
+                helper_text_mode: "on_error"
+                helper_text: "Número telemóvel"
+            ClickableDateField:
+                id: clickable_date
+                hint_text: "Data de Nascimento"
+            MDTextField:
+                line_color_normal: self.error_color if self.error else (0.5, 0.5, 0.5, 1)
+                line_color_focus: self.error_color if self.error else (0, 0, 0, 1)
+                error_color: (1, 0, 0, 1)  # Vermelho
+                id: estudante_label
+                hint_text: "Selecione uma opção"
+                on_focus: if self.focus: root.manager.get_screen('screen_dados_pessoais').menu_list()
+                font_size: dp(20)
+                padding_y: dp(10)
+
+            MDRaisedButton:
+                text: "Atualizar"
+                size_hint_x: 0.8
+                pos_hint:{"center_x": 0.5, "center_y": 0.5}
+                on_release: root.update_user()

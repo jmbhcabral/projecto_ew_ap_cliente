@@ -91,15 +91,6 @@ class RegistarScreen(Screen):
         elif escola == "Não":
             escola = "nao"
 
-        # campos_obrigatorios = [nome, apelido, username, email, password,
-        #                        password2, telemovel, data_nascimento, escola]
-
-        # if any(not campo for campo in campos_obrigatorios):
-        #     Snackbar(
-        #         text="Por favor, preencha todos os campos obrigatórios."
-        #     ).open()
-        #     return
-
         if password != password2:
             Snackbar(text="As senhas não coincidem.").open()
             return

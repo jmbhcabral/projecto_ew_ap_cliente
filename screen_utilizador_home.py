@@ -8,19 +8,13 @@ class UtilizadorHomeScreen(Screen):
     def on_enter(self):
         # Isso mostrará todos os IDs disponíveis
         # Obter o token e o user_id
-        # login_screen = self.manager.get_screen('screen_clientes')
         user_data_singleton = UserDataSingleton.get_instance()
         user_data = user_data_singleton.fetch_user_data()
-        # token = user_data_singleton.token
-        # user_id = user_data_singleton.user_id
-        # print('Token: ', token)
-        # print('User ID: ', user_id)
+
         if user_data:
             self.update_ui_with_user_data(user_data)
         else:
             print('Nenhum dado do usuário encontrado!')
-        # token = login_screen.token
-        # user_id = login_screen.user_id
 
     def update_ui_with_user_data(self, user_data):
         # Extraia os dados do usuário

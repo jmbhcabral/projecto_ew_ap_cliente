@@ -19,6 +19,8 @@ from screen_programa_fidelidade import ScreenProgramaFidelidade
 from screen_suporte import ScreenSuporte
 from screen_qrcode import ScreenQRCode
 from screen_dados_pessoais import ScreenDadosPessoais
+from utils.singleton import UserDataSingleton
+import time
 
 
 class Content(BoxLayout):
@@ -83,8 +85,29 @@ class ExtremeWayApp(MDApp):
     def build(self):
         self.theme_cls.theme_style = "Dark"
         self.theme_cls.primary_palette = "Amber"
-        # Builder.load_file('ExtremeWay.kv')
+
+        # Tenta autenticar o usuário automaticamente
+        self.auto_login()
+
         return MenuScreen()
+
+    def auto_login(self):
+        user_data = UserDataSingleton.get_instance().load_user_data()
+        if user_data:
+            current_time = int(time.time())
+            token_expiration = user_data.get('token_expiration', 0)
+
+            if current_time < token_expiration:
+                # Token ainda valido, autenticar o usuário automaticamente
+                self.set_logged_in(True)
+            elif 'refresh_token' in user_data:
+                # Tenta renovar o token de acesso
+                if UserDataSingleton.get_instance().refresh_token(user_data):
+                    self.set_logged_in(True)
+                else:
+                    self.set_logged_in(False)
+            else:
+                self.set_logged_in(False)
 
     def toggle_login(self):
         if self.is_logged_in:

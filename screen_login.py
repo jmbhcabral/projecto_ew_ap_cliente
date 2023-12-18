@@ -45,11 +45,13 @@ class LoginScreen(Screen):
                 if response.status_code == 200:
                     data = response.json()
                     token = data.get('access')
+                    refresh_token = data.get('refresh')
                     user_id = data.get('user_id')
 
                     # configurar o singleton com o token e o user_id
                     user_data_singleton = UserDataSingleton.get_instance()
-                    user_data_singleton.set_user_credentials(token, user_id)
+                    user_data_singleton.set_user_credentials(
+                        token, refresh_token, user_id)
 
                     app_instance = App.get_running_app()
                     if app_instance:
