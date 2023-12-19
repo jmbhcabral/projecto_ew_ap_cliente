@@ -5,6 +5,8 @@ from kivymd.uix.relativelayout import MDRelativeLayout
 from kivymd.uix.pickers import MDDatePicker
 from kivymd.uix.menu import MDDropdownMenu
 from kivymd.uix.snackbar import Snackbar
+import requests
+import json
 
 
 class ScreenDadosPessoais(Screen):
@@ -71,6 +73,45 @@ class ScreenDadosPessoais(Screen):
         self.ids.estudante_label.text = text_item
         self.menu.dismiss()
 
+    def enviar_dados_servidor(self, user_id, data_atualizada):
+        print('Enviando dados para o servidor...')
+        print('User id: ', user_id)
+        print('Data atualizada: ', data_atualizada)
+
+        url = f'http://127.0.0.1:8000/users/api/v1/{user_id}/'
+        headers = {'Content-Type': 'application/json'}
+        data_json = json.dumps(data_atualizada)
+        response = requests.patch(url, headers=headers, data=data_json)
+
+        if response.status_code == 200:
+            print('Dados atualizados com sucesso!')
+            Snackbar(text="Dados atualizados com sucesso.").open()
+        else:
+            print('Erro ao atualizar dados!')
+            Snackbar(text="Erro ao atualizar dados.").open()
+
+    def dados_iguais(self, data, user_data):
+        print('Data dados pessoais: ', data)
+        print('User data dados pessoais: ', user_data)
+        campos_relevantes = user_data.copy()
+        campos_relevantes.pop('id', None)
+        campos_relevantes['perfil'].pop('qrcode_url', None)
+        print('Campos relevantes: ', campos_relevantes)
+
+        for key in data.keys():
+            if key in campos_relevantes:
+                print('Key: ', key)
+                if isinstance(data[key], dict):
+                    for sub_key in data[key]:
+                        print('Sub key: ', sub_key)
+                        if data[key][sub_key] != campos_relevantes[key]\
+                                .get(sub_key, None):
+                            return False
+                else:
+                    if data[key] != campos_relevantes.get(key, None):
+                        return False
+        return True
+
     def update_user(self):
         if not self.validar_nome() or \
                 not self.validar_apelido() or \
@@ -114,10 +155,14 @@ class ScreenDadosPessoais(Screen):
             print('Data: ', data)
             print('User data: ', user_data)
 
-            if data == user_data:
+            if self.dados_iguais(data, user_data):
                 print('Nenhum dado foi alterado!')
                 Snackbar(text="Nenhum dado foi alterado.").open()
                 return
+            else:
+                print('Dados foram alterados!')
+                user_id = user_data.get('id', None)
+                self.enviar_dados_servidor(user_id, data)
 
     def validar_nome(self):
         nome = self.ids.first_name_label.text
