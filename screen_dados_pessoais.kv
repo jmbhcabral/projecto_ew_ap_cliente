@@ -1,27 +1,4 @@
 
-<ClickableDateField>:
-    size_hint_y: None
-    height: data_nascimento_label.height
-
-    MDTextField:
-        line_color_normal: self.error_color if self.error else (0.5, 0.5, 0.5, 1)
-        line_color_focus: self.error_color if self.error else (0, 0, 0, 1)
-        error_color: (1, 0, 0, 1)  # Vermelho
-        id: data_nascimento_label
-        # hint_text: root.hint_text
-        # text: root.text
-        readonly: True
-        font_size: dp(20)
-        padding_y: dp(10)
-        date_format: "dd/mm/yyyy"
-        validator: "date"
-
-    MDIconButton:
-        icon: "calendar-today"
-        pos_hint: {"center_y": .5}
-        pos: data_nascimento_label.width - self.width + dp(8), 0
-        on_release: root.open_date_picker()
-
 <ScreenDadosPessoais>:
     MDScrollView:
         BoxLayout:
@@ -41,7 +18,9 @@
                 line_color_focus: self.error_color if self.error else (0, 0, 0, 1)
                 error_color: (1, 0, 0, 1)  # Vermelho
                 id: first_name_label
-                hint_text: 'Nome'
+                hint_text: "Nome"
+                helper_text_mode: "persistent"
+                helper_text: "Primeiro Nome"
                 icon_right: "account"
                 font_size: dp(20)
                 padding_y: dp(10)
@@ -50,16 +29,30 @@
                 line_color_focus: self.error_color if self.error else (0, 0, 0, 1)
                 error_color: (1, 0, 0, 1)  # Vermelho
                 id: last_name_label
-                hint_text: 'Apelido'
+                hint_text: "Apelido"
+                helper_text_mode: "persistent"
+                helper_text: "Ultimo Nome"
                 icon_right: "account"
                 font_size: dp(20)
                 padding_y: dp(10)
+            # MDTextField:
+                # line_color_normal: self.error_color if self.error else (0.5, 0.5, 0.5, 1)
+                # line_color_focus: self.error_color if self.error else (0, 0, 0, 1)
+                # error_color: (1, 0, 0, 1)  # Vermelho
+                # id: fidelidade_label
+                # hint_text: "Fidelidade"
+                # helper_text_mode: "persistent"
+                # helper_text: "Ultimo Nome"
+                # icon_right: "account"
+                # font_size: dp(20)
+                # padding_y: dp(10)
             MDTextField:
                 id: username_label
                 readonly: True
                 hint_text: 'Username'
                 help_text: 'Não é possível alterar'
                 helper_text: 'Não é possível alterar'
+                helper_text_mode: "persistent"
                 icon_right: 'account'
                 font_size: dp(20)
                 padding_y: dp(10)
@@ -69,8 +62,8 @@
                 error_color: (1, 0, 0, 1)  # Vermelho
                 id: email_label
                 hint_text: 'Email'
-                helper_text_mode: "on_error"  # Mostra o helper_text quando o campo está em erro
-                helper_text: "user@gmail.com"
+                helper_text_mode: "persistent"
+                helper_text: "Exemplo: user@gmail.com"
                 validator: "email"
                 icon_right: "email"
                 font_size: dp(20)
@@ -82,17 +75,33 @@
                 input_filter: 'int'
                 id: telemovel_label
                 hint_text: 'Telemovel'
-                helper_text_mode: "on_error"
-                helper_text: "Número telemóvel"
-            ClickableDateField:
-                id: clickable_date
+                helper_text_mode: "persistent"
+                helper_text: "Deve conter 9 dígitos."
+                error_message: "Número invalido."
+                icon_right: "phone"
+                font_size: dp(20)
+                padding_y: dp(10)
+            MDTextField:
+                line_color_normal: self.error_color if self.error else (0.5, 0.5, 0.5, 1)
+                line_color_focus: self.error_color if self.error else (0, 0, 0, 1)
+                error_color: (1, 0, 0, 1)  # Vermelho
+                id: data_nascimento_label
                 hint_text: "Data de Nascimento"
+                helper_text: "Só pode alterar uma vez de 6 em 6 meses"
+                helper_text_mode: "persistent"
+                on_focus: root.show_date_picker(self)
+                icon_right: "calendar"
+                font_size: dp(20)
+                padding_y: dp(10)
+
             MDTextField:
                 line_color_normal: self.error_color if self.error else (0.5, 0.5, 0.5, 1)
                 line_color_focus: self.error_color if self.error else (0, 0, 0, 1)
                 error_color: (1, 0, 0, 1)  # Vermelho
                 id: estudante_label
-                hint_text: "Selecione uma opção"
+                hint_text: "Estuda na Ramada?"
+                helper_text_mode: "persistent"
+                helper_text: "Selecione uma opção"
                 on_focus: if self.focus: root.manager.get_screen('screen_dados_pessoais').menu_list()
                 font_size: dp(20)
                 padding_y: dp(10)

@@ -1,4 +1,5 @@
 from kivy.network.urlrequest import UrlRequest
+from utils.singleton import UserDataSingleton
 
 
 class HttpClient:

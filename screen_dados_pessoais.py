@@ -1,10 +1,9 @@
 from kivy.uix.screenmanager import Screen
 from utils.singleton import UserDataSingleton
-from kivy.properties import StringProperty
-from kivymd.uix.relativelayout import MDRelativeLayout
 from kivymd.uix.pickers import MDDatePicker
 from kivymd.uix.menu import MDDropdownMenu
 from kivymd.uix.snackbar import Snackbar
+from datetime import datetime, timedelta
 import requests
 import json
 
@@ -19,6 +18,28 @@ class ScreenDadosPessoais(Screen):
         else:
             print('Nenhum dado do usuário encontrado!')
 
+    def dez_anos_atras(self):
+        agora = datetime.now()
+        dez_anos_atras = agora - timedelta(days=365*10)
+        return dez_anos_atras.strftime('%Y-%m-%d')
+
+    def show_date_picker(self, text_field):
+        # Armazena a referência do campo de texto
+        self.target_text_field = text_field
+
+        dez_anos_atras = self.dez_anos_atras()
+
+        ano, mes, dia = map(int, dez_anos_atras.split('-'))
+        # Cria e abre o MDDatePicker
+        date_picker = MDDatePicker(year=ano, month=mes, day=dia)
+        date_picker.bind(
+            on_save=self.on_date_select)
+        date_picker.open()
+
+    def on_date_select(self, instance, value, date_range):
+        # Atualiza o campo de texto com a data selecionada
+        self.target_text_field.text = value.strftime('%Y-%m-%d')
+
     def update_ui_with_user_data(self, user_data):
         first_name = user_data.get('first_name', 'N/A')
         last_name = user_data.get('last_name', 'N/A')
@@ -27,26 +48,30 @@ class ScreenDadosPessoais(Screen):
         telemovel = user_data['perfil'].get('telemovel', 'N/A')
         data_nascimento = user_data['perfil'].get('data_nascimento', 'N/A')
         escola = user_data['perfil'].get('estudante', 'N/A')
+        # fidelidade = user_data['perfil'].get('tipo_fidelidade', 'N/A')
 
         self.ids.first_name_label.text = first_name
         self.ids.last_name_label.text = last_name
         self.ids.username_label.text = username
         self.ids.email_label.text = email
         self.ids.telemovel_label.text = telemovel
-        self.ids.clickable_date.ids.data_nascimento_label.text = data_nascimento
+        self.ids.data_nascimento_label.text = data_nascimento
         self.ids.estudante_label.text = escola
+        # self.ids.fidelidade_label.text = fidelidade
 
     def menu_list(self):
         self.menu_items = [
             {
                 "viewclass": "OneLineListItem",
                 "text": "Sim, na Esc. Sec. Ramada",
-                "on_release": lambda x="Sim, na Esc. Sec. Ramada": self.set_item(x),
+                "on_release": lambda x="Sim, na Esc. Sec. Ramada": self
+                .set_item(x),
             },
             {
                 "viewclass": "OneLineListItem",
                 "text": "Sim, no Agrup. Vasco Santana",
-                "on_release": lambda x="Sim, no Agrup. Vasco Santana": self.set_item(x),
+                "on_release": lambda x="Sim, no Agrup. Vasco Santana": self
+                .set_item(x),
             },
             {
                 "viewclass": "OneLineListItem",
@@ -86,9 +111,47 @@ class ScreenDadosPessoais(Screen):
         if response.status_code == 200:
             print('Dados atualizados com sucesso!')
             Snackbar(text="Dados atualizados com sucesso.").open()
-        else:
+            self.ids.telemovel_label.error = False
+
+        elif response.status_code > 200 and response.status_code < 500:
             print('Erro ao atualizar dados!')
-            Snackbar(text="Erro ao atualizar dados.").open()
+            try:
+                print('TRY')
+                error_messages = response.json()
+                print('Error messages: ', error_messages)
+                for field, messages in error_messages.items():
+                    if field == "email":
+                        self.ids.email_label.error = True
+                        self.ids.email_label.helper_text = messages[0]
+                    elif field == "perfil":
+                        # Acessa o dicionário aninhado 'perfil'
+                        perfil_fields = messages
+                        if "telemovel" in perfil_fields:
+                            self.ids.telemovel_label.error = True
+                            self.ids\
+                                .telemovel_label\
+                                .helper_text_mode = "on_error"
+                            self.ids.telemovel_label.helper_text = \
+                                perfil_fields["telemovel"][0]
+                        elif "data_nascimento" in perfil_fields:
+                            self.ids.data_nascimento_label.error = True
+                            self.ids\
+                                .data_nascimento_label\
+                                .helper_text_mode = "on_error"
+                            self.ids.data_nascimento_label.helper_text = \
+                                perfil_fields["data_nascimento"][0]
+
+                        elif "estudante" in perfil_fields:
+                            self.ids.estudante_label.error = True
+                            self.ids.estudante_label.helper_text = \
+                                perfil_fields["estudante"][0]
+
+            except ValueError:
+                Snackbar(
+                    text="Erro ao atualizar dados. Tente mais tarde.").open()
+        else:
+            print('Erro no servidor!')
+            Snackbar(text="Erro no servidor. Tente mais tarde.").open()
 
     def dados_iguais(self, data, user_data):
         print('Data dados pessoais: ', data)
@@ -113,13 +176,21 @@ class ScreenDadosPessoais(Screen):
         return True
 
     def update_user(self):
-        if not self.validar_nome() or \
-                not self.validar_apelido() or \
-                not self.validar_email() or \
-                not self.validar_telemovel() or \
-                not self.validar_data_nascimento() or \
-                not self.validar_escola():
-            return
+        erro = False
+        if not self.validar_nome():
+            erro = True
+        if not self.validar_apelido():
+            erro = True
+        if not self.validar_email():
+            erro = True
+        if not self.validar_telemovel():
+            erro = True
+        if not self.validar_data_nascimento():
+            erro = True
+        if not self.validar_escola():
+            erro = True
+        if erro:
+            return  # Não atualiza os dados do usuário
 
         user_data_singleton = UserDataSingleton.get_instance()
         user_data = user_data_singleton.fetch_user_data()
@@ -129,7 +200,7 @@ class ScreenDadosPessoais(Screen):
             apelido = self.ids.last_name_label.text
             email = self.ids.email_label.text
             telemovel = self.ids.telemovel_label.text
-            data_nascimento = self.ids.clickable_date.ids.data_nascimento_label.text
+            data_nascimento = self.ids.data_nascimento_label.text
             estudante = self.ids.estudante_label.text
 
             if estudante == "Sim, na Esc. Sec. Ramada":
@@ -168,7 +239,8 @@ class ScreenDadosPessoais(Screen):
         nome = self.ids.first_name_label.text
         if not nome:
             self.ids.first_name_label.error = True
-            Snackbar(text="O campo 'Nome' é obrigatório.").open()
+            self.ids.first_name_label.helper_text_mode = "on_error"
+            self.ids.first_name_label.helper_text = "Este campo é obrigatório."
             return False
         else:
             self.ids.first_name_label.error = False
@@ -178,7 +250,8 @@ class ScreenDadosPessoais(Screen):
         apelido = self.ids.last_name_label.text
         if not apelido:
             self.ids.last_name_label.error = True
-            Snackbar(text="O campo 'Apelido' é obrigatório.").open()
+            self.ids.last_name_label.helper_text_mode = "on_error"
+            self.ids.last_name_label.helper_text = "Este campo é obrigatório."
             return False
         else:
             self.ids.last_name_label.error = False
@@ -188,7 +261,8 @@ class ScreenDadosPessoais(Screen):
         email = self.ids.email_label.text
         if not email:
             self.ids.email_label.error = True
-            Snackbar(text="O campo 'Email' é obrigatório.").open()
+            self.ids.email_label.helper_text_mode = "on_error"
+            self.ids.email_label.helper_text = "Este campo é obrigatório."
             return False
         else:
             self.ids.email_label.error = False
@@ -198,42 +272,41 @@ class ScreenDadosPessoais(Screen):
         telemovel = self.ids.telemovel_label.text
         if not telemovel:
             self.ids.telemovel_label.error = True
-            Snackbar(text="O campo 'Telemóvel' é obrigatório.").open()
+            self.ids.telemovel_label.helper_text_mode = "on_error"
+            self.ids.telemovel_label.helper_text = "Este campo é obrigatório."
+            return False
+        elif len(self.ids.telemovel_label.text) != 9:
+            self.ids.telemovel_label.error = True
+            self.ids.telemovel_label.helper_text_mode = "on_error"
+            self.ids.telemovel_label\
+                .helper_text = "O campo 'Telemóvel' deve ter 9 dígitos."
             return False
         else:
             self.ids.telemovel_label.error = False
-            return True
+        return True
 
     def validar_data_nascimento(self):
-        data_nascimento = self.ids.clickable_date.ids.data_nascimento_label.text
+        user_data_singleton = UserDataSingleton.get_instance()
+        user_data = user_data_singleton.fetch_user_data()
+        data_nascimento = self.ids\
+            .data_nascimento_label.text
         if not data_nascimento:
-            self.ids.clickable_date.ids.data_nascimento_label.error = True
-            Snackbar(text="O campo 'Data de nascimento' é obrigatório.").open()
+            self.ids.data_nascimento_label.error = True
+            self.ids.data_nascimento_label.helper_text_mode = "on_error"
+            self.ids.data_nascimento_label\
+                .helper_text = "Este campo é obrigatório."
             return False
         else:
-            self.ids.clickable_date.ids.data_nascimento_label.error = False
+            self.ids.data_nascimento_label.error = False
             return True
 
     def validar_escola(self):
         escola = self.ids.estudante_label.text
         if not escola:
             self.ids.estudante_label.error = True
-            Snackbar(text="O campo 'Escola' é obrigatório.").open()
+            self.ids.estudante_label.helper_text_mode = "on_error"
+            self.ids.estudante_label.helper_text = "Este campo é obrigatório."
             return False
         else:
             self.ids.estudante_label.error = False
             return True
-
-
-class ClickableDateField(MDRelativeLayout):
-    text = StringProperty()
-    hint_text = StringProperty()
-
-    def open_date_picker(self):
-        date_dialog = MDDatePicker()
-        date_dialog.bind(on_save=self.on_date_select)
-        date_dialog.open()
-
-    def on_date_select(self, instance, value, date_range):
-        formated_date = value.strftime('%Y-%m-%d')
-        self.text = formated_date

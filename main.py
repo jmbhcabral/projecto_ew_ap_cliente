@@ -19,8 +19,10 @@ from screen_programa_fidelidade import ScreenProgramaFidelidade
 from screen_suporte import ScreenSuporte
 from screen_qrcode import ScreenQRCode
 from screen_dados_pessoais import ScreenDadosPessoais
-from utils.singleton import UserDataSingleton
+from screen_change_password import ScreenChangePassword
+from screen_ementa_utilizador import ScreenEmentaUtilizador
 import time
+from utils.singleton import UserDataSingleton
 
 
 class Content(BoxLayout):

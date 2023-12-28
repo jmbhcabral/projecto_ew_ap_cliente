@@ -6,6 +6,8 @@ from kivymd.uix.menu import MDDropdownMenu
 import requests
 import json
 from kivymd.uix.snackbar import Snackbar
+from datetime import datetime
+from dateutil.relativedelta import relativedelta
 
 
 class RegistarScreen(Screen):
@@ -113,8 +115,8 @@ class RegistarScreen(Screen):
         response = requests.post(
             'http://127.0.0.1:8000/users/api/v1/', json=data)
 
-        # print('Response: ', response)
-        print(json.dumps(response.json(), indent=4))
+        print('Response: ', response)
+        # print(json.dumps(response.json(), indent=4))
 
         # if response:
         print('Status Code: ', response.status_code)
@@ -146,11 +148,12 @@ class RegistarScreen(Screen):
                     # Adicione condições semelhantes para outros campos
 
             except ValueError:
-                print('Erro ao registar utilizador(text): ', response.text)
+                print('Erro ao registar utilizador(text): ', response)
                 Snackbar(text=response.text).open()
             return
 
         print('Utilizador registado com sucesso')
+        Snackbar(text="Utilizador registado com sucesso.").open()
         self.manager.current = 'screen_inicio'
 
     def validar_nome(self):
@@ -221,6 +224,14 @@ class RegistarScreen(Screen):
         if not data_nascimento:
             self.ids.clickable_date.ids.data_nascimento_label.error = True
             Snackbar(text="O campo 'Data de Nascimento' é obrigatório.").open()
+            return False
+        print('Data de nascimento: ', data_nascimento)
+        data_actual = datetime.now()
+        dez_anos_atras = data_actual - relativedelta(years=10)
+        data_nascimento = datetime.strptime(data_nascimento, '%Y-%m-%d')
+        if data_nascimento > dez_anos_atras:
+            self.ids.clickable_date.ids.data_nascimento_label.error = True
+            Snackbar(text="A idade mínima é de 10 anos.").open()
             return False
         self.ids.clickable_date.ids.data_nascimento_label.error = False
         return True
