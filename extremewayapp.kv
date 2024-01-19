@@ -1,0 +1,74 @@
+#:include screen_inicio.kv
+#:include screen_acerca_de.kv
+#:include screen_programa_fidelidade.kv
+#:include screen_login.kv
+#:include screen_interface_utilizador.kv
+#:include screen_movimentos_pontos.kv
+#:include screen_utilizador_home.kv
+#:include screen_qrcode.kv
+#:include screen_pontos_oferta.kv
+#:include screen_dados_pessoais.kv
+#:include screen_change_password.kv
+#:include screen_ementa_utilizador.kv
+#:include screen_registar.kv
+#:include screen_suporte.kv
+#:import navigation_screen_manager navigation_screen_manager
+
+# cor ambar - 1.0, 0.749, 0.0, 1
+# cor verde oliva - 0.502, 0.502, 0.0, 1
+
+
+
+<MainScreen>:
+    Screen:
+        MDTopAppBar:
+            id: toolbar
+            pos_hint: {"top": 1}
+            # title: "Extreme Way"
+            elevation: 8
+            left_action_items: [["menu", lambda the_button: app.open_menu(the_button)], ["chevron-left", lambda x: root.ids.screen_manager.pop()]]
+            right_action_items: [[app.login_icon, lambda x: app.toggle_login()]]
+        NavigationScreenManager:
+            id: screen_manager
+            ScreenInicio:
+                name: "screen_inicio"
+                size_hint: 1, 0.9
+            LoginScreen:
+                name: "screen_clientes"
+                size_hint: 1, 0.9
+            ScreenAcercaDe:
+                name: "screen_acerca_de"
+                size_hint: 1, 0.9
+            ScreenProgramaFidelidade:
+                name: "screen_programa_fidelidade"
+                size_hint: 1, 0.9
+            ScreenSuporte:
+                name: "screen_suporte"
+                size_hint: 1, 0.9
+            UtilizadorHomeScreen:
+                name: "screen_utilizador_home"
+                size_hint: 1, 0.9
+            RegistarScreen:
+                name: "screen_registar"
+                size_hint: 1, 0.9
+            ScreenQRCode:
+                name: "screen_qrcode"
+                size_hint: 1, 0.9
+            ScreenDadosPessoais:
+                name: "screen_dados_pessoais"
+                size_hint: 1, 0.9
+            ScreenChangePassword:
+                name: "screen_change_password"
+                size_hint: 1, 0.9
+            ScreenEmentaUtilizador:
+                name: "screen_ementa_utilizador"
+                size_hint: 1, 0.88  # Ajuste conforme necessário
+            ScreenPontosOferta:
+                name: "screen_pontos_oferta"
+                size_hint: 1, 0.88  # Ajuste conforme necessário       
+            ScreenInterfaceUtilizador:
+                name: "screen_interface_utilizador"
+                size_hint: 1, 0.90    
+            ScreenMovimentosPontos:
+                name: "screen_movimentos_pontos"
+                size_hint: 1, 0.90

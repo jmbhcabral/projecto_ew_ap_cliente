@@ -1,0 +1,170 @@
+
+
+<ScreenInterfaceUtilizador>:
+    MDBoxLayout:
+        orientation: "vertical"
+        canvas.before:
+            Color:
+                rgba: 0, 0, 0, 1
+            Rectangle:
+                size: self.size
+                pos: self.pos 
+        GridLayout:
+            cols: 2
+            rows: 4
+            size_hint: 1, 0.9 # ocupa todo o espaço disponivel
+
+            MDBoxLayout:
+                orientation: "vertical"
+                spacing: dp(5)
+                MDIconButton:
+                    icon: "account"
+                    icon_size: "64sp"
+                    theme_text_color: "Custom"
+                    text_color: app.theme_cls.primary_color
+                    on_release: app.redirect_to_screen("screen_utilizador_home")
+                    size_hint: 1, 1 # Ocupa toda a celula
+                    # size_hint_y: None
+                    height: dp(64)
+
+                MDLabel:
+                    text: "Conta"
+                    halign: "center"
+                    size_hint_y: None
+                    height: dp(20)
+            
+            MDBoxLayout:
+                orientation: "vertical"
+                spacing: dp(5)
+                MDIconButton:
+                    icon: "account-wrench"
+                    theme_text_color: "Custom"
+                    text_color: app.theme_cls.primary_color
+                    icon_size: "64sp"
+                    on_release: app.redirect_to_screen("screen_dados_pessoais")
+                    size_hint: 1, 1
+                    # size_hint_y: None
+                    height: dp(64)
+
+                MDLabel:
+                    text: "Alterar dados"
+                    halign: "center"
+                    size_hint_y: None
+                    height: dp(20)
+
+            MDBoxLayout:
+                orientation: "vertical"
+                spacing: dp(5)
+                MDIconButton:
+                    icon: "lock-reset"
+                    theme_text_color: "Custom"
+                    text_color: app.theme_cls.primary_color
+                    icon_size: "64sp"
+                    on_release: app.redirect_to_screen("screen_change_password")
+                    size_hint: 1, 1
+                    # size_hint_y: None
+                    height: dp(64)
+
+                MDLabel:
+                    text: "Alterar password"
+                    halign: "center"
+                    size_hint_y: None
+                    height: dp(20)
+
+            MDBoxLayout:
+                orientation: "vertical"
+                spacing: dp(5)
+                MDIconButton:
+                    icon: "qrcode"
+                    theme_text_color: "Custom"
+                    text_color: app.theme_cls.primary_color
+                    icon_size: "64sp"
+                    on_release: app.redirect_to_screen("screen_qrcode")
+                    size_hint: 1, 1
+                    # size_hint_y: None
+                    height: dp(64)
+
+                MDLabel:
+                    text: "Qrcode"
+                    halign: "center"
+                    size_hint_y: None
+                    height: dp(20)
+
+            MDBoxLayout:
+                orientation: "vertical"
+                spacing: dp(5)
+                MDIconButton:
+                    icon: "hamburger"
+                    theme_text_color: "Custom"
+                    text_color: app.theme_cls.primary_color
+                    icon_size: "64sp"
+                    on_release: app.redirect_to_screen("screen_ementa_utilizador")
+                    size_hint: 1, 1
+                    # size_hint_y: None
+                    height: dp(64)
+
+                MDLabel:
+                    text: "Ementa"
+                    halign: "center"
+                    size_hint_y: None
+                    height: dp(20)
+
+            MDBoxLayout:
+                orientation: "vertical"
+                spacing: dp(5)
+
+                MDIconButton:
+                    icon: "star-face"
+                    theme_text_color: "Custom"
+                    text_color: app.theme_cls.primary_color
+                    icon_size: "64sp"
+                    on_release: app.redirect_to_screen("screen_pontos_oferta")
+                    size_hint: 1, 1
+                    # size_hint_y: None
+                    height: dp(64)
+
+                MDLabel:
+                    text: "Lista ofertas"
+                    halign: "center"
+                    size_hint_y: None
+                    height: dp(20)
+
+            MDBoxLayout:
+                orientation: "vertical"
+                spacing: dp(5)
+
+                MDIconButton:
+                    icon: "format-list-bulleted"
+                    theme_text_color: "Custom"
+                    text_color: app.theme_cls.primary_color
+                    icon_size: "64sp"
+                    on_release: app.redirect_to_screen("screen_movimentos_pontos")
+                    size_hint: 1, 1
+                    # size_hint_y: None
+                    height: dp(64)
+                
+                MDLabel:
+                    text: "Movimentos"
+                    halign: "center"
+                    size_hint_y: None
+                    height: dp(20)
+
+        MDBoxLayout:
+            orientation: "horizontal"
+            spacing:dp(5)
+            size_hint: 1, 0.1
+            MDLabel:
+                text: "Você tem:"
+                font_size: dp(30)
+                halign: "right"
+                size_hint_x: 0.6
+            MDLabel:
+                id: pontos_label
+                text: ""
+                font_size: dp(30)
+                halign: "left"
+                size_hint_x: 0.4
+
+
+
+                    

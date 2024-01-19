@@ -62,7 +62,7 @@ class LoginScreen(Screen):
                             "Não foi possível obter a instância do aplicativo."
                         )
 
-                    self.manager.current = 'screen_utilizador_home'
+                    self.manager.current = 'screen_interface_utilizador'
 
                     break
                 if response.status_code == 400:

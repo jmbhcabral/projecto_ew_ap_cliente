@@ -1,88 +1,46 @@
 from kivymd.app import MDApp
-# from kivy.lang import Builder
-from kivy.uix.screenmanager import ScreenManager
+from kivy.lang import Builder
 from kivy.uix.boxlayout import BoxLayout
-from kivy.properties import (
-    ObjectProperty, StringProperty, NumericProperty, BooleanProperty)
-from kivy.uix.floatlayout import FloatLayout
-from http_client import HttpClient
+from kivymd.uix.menu import MDDropdownMenu
+from kivy.uix.screenmanager import ScreenManager
 from storage_manager import StorageManager
-from kivy.uix.behaviors import CoverBehavior
 from kivy.uix.image import AsyncImage
-from models import Produto
-from screen_login import LoginScreen
-from screen_utilizador_home import UtilizadorHomeScreen
-from screen_registar import RegistarScreen
+from kivy.properties import ObjectProperty, BooleanProperty, StringProperty
 from screen_inicio import ScreenInicio
+from screen_login import LoginScreen
+from navigation_screen_manager import NavigationScreenManager
 from screen_acerca_de import ScreenAcercaDe
 from screen_programa_fidelidade import ScreenProgramaFidelidade
 from screen_suporte import ScreenSuporte
-from screen_qrcode import ScreenQRCode
-from screen_dados_pessoais import ScreenDadosPessoais
+from screen_interface_utilizador import ScreenInterfaceUtilizador
+from screen_utilizador_home import UtilizadorHomeScreen
 from screen_change_password import ScreenChangePassword
+from screen_dados_pessoais import ScreenDadosPessoais
 from screen_ementa_utilizador import ScreenEmentaUtilizador
+from screen_movimentos_pontos import ScreenMovimentosPontos
+from screen_pontos_oferta import ScreenPontosOferta
+from screen_qrcode import ScreenQRCode
+from screen_registar import RegistarScreen
 import time
+
+
 from utils.singleton import UserDataSingleton
 
 
-class Content(BoxLayout):
-    manager = ObjectProperty()
-    nav_drawer = ObjectProperty()
-
-    def logout(self):
-        login_screen = self.manager.get_screen('screen_clientes')
-        login_screen.logout()
-
-
-class MenuScreen(ScreenManager):
-    pass
-
-
-class ProdutoWidget(BoxLayout):
-    nome = StringProperty()
-    descricao_curta = StringProperty()
-    imagem = StringProperty()
-    preco_1 = NumericProperty()
-    vegetariano = BooleanProperty()
-
-
-class MainWidget(FloatLayout):
-    recycleView = ObjectProperty(None)
-    error_str = StringProperty('')
-
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-
-        HttpClient().get_produtos(self.on_server_data, self.on_server_error)
-
-    def on_kv_post(self, base_widget):
-        produtos_list = StorageManager().load('produtos')
-        if produtos_list:
-            self.recycleView.data = [{
-                'nome': produto['nome'],
-                'descricao_curta': produto['descricao_curta'],
-                'imagem': produto['imagem'],
-                'preco_1': produto['preco_1'],
-                # Use .get para evitar KeyError
-                'vegetariano': produto.get('vegetariano', False)
-            } for produto in produtos_list]
-
-    def on_server_data(self, produtos_list):
-        self.recycleView.data = produtos_list
-        StorageManager().save_data('produtos', produtos_list)
-
-    def on_server_error(self, error):
-        print('Erro: ' + error)
-        self.error_str = "Error: " + error
+class MainScreen(ScreenManager):
+    nav_manager = ObjectProperty(None)
 
 
 class ExtremeWayApp(MDApp):
     is_logged_in = BooleanProperty(False)  # Rastreia o estado de login
-    login_icon = StringProperty("login-variant")
+    login_icon = StringProperty("login-variant")  # Ícone de login
+    menu = ObjectProperty()
 
     def set_logged_in(self, logged_in):
         self.is_logged_in = logged_in
+        print("Logged in: {}".format(logged_in))
         self.login_icon = "logout-variant" if logged_in else "login-variant"
+        self.build_menu()
 
     def build(self):
         self.theme_cls.theme_style = "Dark"
@@ -91,7 +49,56 @@ class ExtremeWayApp(MDApp):
         # Tenta autenticar o usuário automaticamente
         self.auto_login()
 
-        return MenuScreen()
+        self.main_screen = MainScreen()
+        # main_screen.ids.screen_manager.push("screen_inicio")
+        return self.main_screen
+
+    def build_menu(self):
+        if self.is_logged_in:
+            menu_items = [
+                {"text": "Início", "viewclass": "OneLineListItem",
+                    "on_release": lambda x='screen_inicio': self.menu_callback(x)},
+                {"text": "Área Clientes", "viewclass": "OneLineListItem",
+                    "on_release": lambda x='screen_interface_utilizador': self.menu_callback(x)},
+                {"text": "Acerca de", "viewclass": "OneLineListItem",
+                    "on_release": lambda x='screen_acerca_de': self.menu_callback(x)},
+                {"text": "Programa Fidelidade", "viewclass": "OneLineListItem",
+                    "on_release": lambda x='screen_programa_fidelidade': self.menu_callback(x)}
+            ]
+        else:
+            menu_items = [
+                {"text": "Início", "viewclass": "OneLineListItem",
+                    "on_release": lambda x='screen_inicio': self.menu_callback(x)},
+                {"text": "Clientes", "viewclass": "OneLineListItem",
+                    "on_release": lambda x='screen_clientes': self.menu_callback(x)},
+                {"text": "Acerca de", "viewclass": "OneLineListItem",
+                    "on_release": lambda x='screen_acerca_de': self.menu_callback(x)},
+                {"text": "Programa Fidelidade", "viewclass": "OneLineListItem",
+                    "on_release": lambda x='screen_programa_fidelidade': self.menu_callback(x)}
+            ]
+        self.menu = MDDropdownMenu(
+            items=menu_items,
+            width_mult=4
+        )
+
+    def on_start(self):
+
+        self.build_menu()
+
+        # Define o screen inicial com base no estado de login
+        if self.is_logged_in:
+            self.root.ids\
+                .screen_manager.current = 'screen_interface_utilizador'
+        else:
+            self.root.ids.screen_manager.current = 'screen_inicio'
+
+    def open_menu(self, button):
+        self.menu.caller = button
+        self.menu.open()
+
+    def menu_callback(self, screen_name):
+        self.main_screen.ids.screen_manager.push(screen_name)
+        self.menu.dismiss()
 
     def auto_login(self):
         user_data = UserDataSingleton.get_instance().load_user_data()
@@ -116,9 +123,21 @@ class ExtremeWayApp(MDApp):
             login_screen = self.root.ids.screen_manager.get_screen(
                 'screen_clientes')
             login_screen.logout()
+            self.logout_user()
         else:
             # Lógica para mostrar a tela de login
             self.root.ids.screen_manager.current = 'screen_clientes'
+
+    def redirect_to_screen(self, screen_name):
+        if self.is_logged_in:
+            self.main_screen.ids.screen_manager.push(screen_name)
+        else:
+            self.root.ids.screen_manager.current = 'screen_clientes'
+
+    def logout_user(self):
+        # acessando o screen_manager e chamando o método logout
+        navigation_manager = self.root.ids.screen_manager
+        navigation_manager.logout()
 
 
 if __name__ == '__main__':

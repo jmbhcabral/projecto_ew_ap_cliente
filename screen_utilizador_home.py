@@ -6,7 +6,6 @@ import requests
 class UtilizadorHomeScreen(Screen):
 
     def on_enter(self):
-        # Isso mostrará todos os IDs disponíveis
         # Obter o token e o user_id
         user_data_singleton = UserDataSingleton.get_instance()
         user_data = user_data_singleton.fetch_user_data()

@@ -1,0 +1,48 @@
+
+<ScreenMovimentosPontos>:
+    MDBoxLayout:
+        orientation: "vertical"
+        canvas.before:
+            Color:
+                rgba: 0, 0, 0, 1
+            Rectangle:
+                size: self.size
+                pos: self.pos
+        MDBoxLayout:
+            orientation: "horizontal"
+            size_hint_y: None
+            height: self.minimum_height
+            MDLabel:
+                text: "Pontos disponiveis: "
+                size_hint_y: None
+                height: self.texture_size[1]
+                
+            MDLabel:
+                id: saldo_pontos
+                text: ""
+                size_hint_y: None
+                height: self.texture_size[1]
+        ScrollView:
+            GridLayout:
+                id: grid
+                cols: 3
+                size_hint_y: None
+                height: self.minimum_height
+                spacing: dp(20)
+                padding: dp(10)
+
+                # Titulos colunas
+                MDLabel:
+                    text: "Data"
+                    size_hint_y: None
+                    height: self.texture_size[1]
+                MDLabel:
+                    text: "Operação"
+                    size_hint_y: None
+                    height: self.texture_size[1]
+                MDLabel:
+                    text: "Pontos"
+                    size_hint_y: None
+                    halign: "right"
+                    height: self.texture_size[1]
+

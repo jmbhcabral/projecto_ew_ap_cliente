@@ -3,6 +3,7 @@ import os
 import requests
 from cryptography.fernet import Fernet
 import time
+from utils.error_utils import show_error_popup
 
 
 class UserDataSingleton:
@@ -49,13 +50,6 @@ class UserDataSingleton:
                 encrypted_data = file.read()
                 decrypted_data = Fernet(self.key).decrypt(encrypted_data)
                 user_data = json.loads(decrypted_data.decode())
-                print('----------DEBUGGING----------')
-                print('-----------------------------')
-                print('-----------------------------')
-                print('Dados do usuário carregados - load_user_data: ', user_data)
-                print('-----------------------------')
-                print('-----------------------------')
-                print('----------DEBUGGING----------')
                 return user_data
         except FileNotFoundError:
             return None
@@ -78,13 +72,7 @@ class UserDataSingleton:
     def _get_authorization_header(self):
         user_data = self.load_user_data()
         if user_data and 'token' in user_data:
-            print('----------DEBUGGING----------')
-            print('-----------------------------')
-            print('-----------------------------')
-            print('User data get_authorization: ', user_data['token'])
-            print('-----------------------------')
-            print('-----------------------------')
-            print('----------DEBUGGING----------')
+
             return {'Authorization': f'Bearer {user_data["token"]}'}
         else:
             return {}
@@ -95,16 +83,10 @@ class UserDataSingleton:
     def refresh_token(self, user_data):
 
         refresh_data = {
-            'refresh': user_data.get('refresh_token') if user_data and 'refresh_token' in user_data else None
+            'refresh': user_data.get('refresh_token') if user_data
+            and 'refresh_token' in user_data else None
         }
-        print('----------DEBUGGING----------')
-        print('-----------------------------')
-        print('-----------------------------')
-        print('Refresh data: ', refresh_data)
-        print('-----------------------------')
-        print('-----------------------------')
-        print('----------DEBUGGING----------')
-        print('Refresh_token: ', user_data.get('refresh_token'))
+
         if user_data.get('new_token'):
             print('----------DEBUGGING----------')
             print('-----------------------------')
@@ -118,52 +100,55 @@ class UserDataSingleton:
 
         # Adiciona o cabeçalho de tipo de conteúdo JSON
         headers = {'Content-Type': 'application/json'}
-        print('----------DEBUGGING----------')
-        print('-----------------------------')
-        print('-----------------------------')
-        print('Headers: ', headers)
-        print('-----------------------------')
-        print('-----------------------------')
-        print('----------DEBUGGING----------')
 
-        response = requests.post(
-            self.base_url + '/api/token/refresh/',
-            headers=headers,
-            json=refresh_data,
+        response = None
+        try:
+            response = requests.post(
+                self.base_url + '/api/token/refresh/',
+                # headers=headers,
+                # json=refresh_data,
+                data=json.dumps(refresh_data),
+                headers=headers
+            )
+        except requests.exceptions.ConnectionError:
+            show_error_popup(
+                'Não foi possível se conectar ao servidor. '
+                'Por favor, tente novamente mais tarde.')
+            return None
+        except requests.exceptions.Timeout:
+            show_error_popup(
+                'O servidor não respondeu. '
+                'Por favor, tente novamente mais tarde.')
+            return None
+        except Exception as e:
+            print('Erro desconhecido ao atualizar o token: ', e)
+            return None
 
-        )
-        print('----------DEBUGGING----------')
-        print('-----------------------------')
-        print('-----------------------------')
-        print('Response: ', response)
-        print('-----------------------------')
-        print('-----------------------------')
-        print('----------DEBUGGING----------')
-
-        if response.status_code == 200:
+        if response and response.status_code == 200:
             new_tokens = response.json()
-            print('----------DEBUGGING----------')
-            print('-----------------------------')
-            print('-----------------------------')
-            print('New tokens: ', new_tokens)
-            print('-----------------------------')
-            print('-----------------------------')
-            print('----------DEBUGGING----------')
+
             # user_data.update(new_tokens)
             user_data['token'] = new_tokens.get('access')
             self.save_user_data(user_data)
             self.print_debug("Token atualizado com sucesso.")
             return True
-        elif response.status_code == 400 and "refresh" in response.json():
+        elif response and response.status_code == 400 \
+                and "refresh" in response.json():
             print('json response: ', response.json())
             error_message = response.json()["refresh"][0]
             self.print_debug(
-                f"1-Falha ao atualizar o token. Código de status: {response.status_code}. Detalhes do erro: {error_message}")
+                f"1-Falha ao atualizar o token. "
+                f"Código de status: {response.status_code}. "
+                f"Detalhes do erro: {error_message}")
             return False
         else:
-            error_message = response.text if response.text else 'Erro desconhecido ao atualizar o token.'
+            error_message = response.text if response and response.text \
+                else 'Erro desconhecido ao atualizar o token.'
             self.print_debug(
-                f"2-Falha ao atualizar o token. Código de status: {response.status_code}. Detalhes do erro: {error_message}")
+                f"2-Falha ao atualizar o token. "
+                f"Código de status: "
+                f"{response.status_code if response else 'Não há resposta'}. "
+                f"Detalhes do erro: {error_message}")
 
             return False
 
@@ -196,10 +181,26 @@ class UserDataSingleton:
         if user_data is not None and isinstance(user_data, dict):
             user_id = user_data["user_id"]
             user_data_url = f'http://127.0.0.1:8000/users/api/v1/{user_id}'
-            response = requests.get(
-                user_data_url, headers=self._get_authorization_header())
+            response = None
+            try:
+                response = requests.get(
+                    user_data_url, headers=self._get_authorization_header())
+            except requests.exceptions.ConnectionError:
+                show_error_popup(
+                    'Não foi possível se conectar ao servidor. '
+                    'Por favor, tente novamente mais tarde.')
+                return None
+            except requests.exceptions.Timeout:
+                show_error_popup(
+                    'O servidor não responde. '
+                    'Por favor, tente novamente mais tarde.')
+                return None
+            except Exception as e:
+                show_error_popup(
+                    f'Erro desconhecido ao recuperar os dados do usuário. '
+                    f'Por favor, tente novamente mais tarde. Erro: {e}')
 
-            if response.status_code == 200:
+            if response and response.status_code == 200:
                 print('Dados do usuário fetch_user_data: ', response.json())
                 return response.json()
             else:

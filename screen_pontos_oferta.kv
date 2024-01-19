@@ -1,0 +1,39 @@
+#:import utils kivy.utils
+#:set color1 "#DD7835"
+
+<ScreenPontosOferta>:
+    
+    canvas.before:
+        Color:
+            rgba: 0, 0, 0, 1
+        Rectangle:
+            size: self.size
+            pos: self.pos
+    BoxLayout:
+        orientation: "vertical"
+        spacing: dp(10)
+        padding: dp(20)
+        TitleLabel:
+            id: tipo_fidelidade
+            text: ""
+        ScrollView:
+            BoxLayout:
+                id: container_layout
+                orientation: 'vertical'
+                size_hint_y: None
+                height: self.minimum_height
+
+<TitleLabel@FitLabel>:
+    font_size: dp(22)
+    bold: True
+    padding: dp(16), dp(3)
+    canvas.before:
+        Color:
+            rgb: utils.get_color_from_hex(color1)
+        Rectangle:
+            pos: self.pos
+            size: self.size
+
+<FitLabel@Label>:
+    size_hint: None, None
+    size: self.texture_size

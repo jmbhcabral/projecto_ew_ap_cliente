@@ -4,13 +4,17 @@
 #:include screen_programa_fidelidade.kv
 #:include screen_menu.kv
 #:include screen_login.kv
+#:include screen_interface_utilizador.kv
+#:include screen_movimentos_pontos.kv
 #:include screen_utilizador_home.kv
 #:include screen_qrcode.kv
+#:include screen_pontos_oferta.kv
 #:include screen_dados_pessoais.kv
 #:include screen_change_password.kv
 #:include screen_ementa_utilizador.kv
 #:include screen_registar.kv
 #:include screen_suporte.kv
+
 
 # cor ambar - 1.0, 0.749, 0.0, 1
 # cor verde oliva - 0.502, 0.502, 0.0, 1
@@ -32,36 +36,44 @@
                         root.nav_drawer.set_state("close")
                         root.manager.current = "screen_utilizador_home" if app.is_logged_in else 'screen_clientes'
             
-                OneLineListItem:
-                    text: "Dados Pessoais" if app.is_logged_in else ""
-                    # size_hint_y: None if not app.is_logged_in else 1
-                    height: 0 if not app.is_logged_in else dp(48)
-                    on_release:
-                        root.nav_drawer.set_state("close")
-                        root.manager.current = "screen_dados_pessoais"
-                OneLineListItem:
-                    text: "Alterar Password" if app.is_logged_in else ""
-                    # size_hint_y: None if not app.is_logged_in else 1
-                    height: 0 if not app.is_logged_in else dp(48)
-                    on_release:
-                        root.nav_drawer.set_state("close")
-                        root.manager.current = "screen_change_password"
+                # OneLineListItem:
+                    # text: "Dados Pessoais" if app.is_logged_in else ""
+                    # # size_hint_y: None if not app.is_logged_in else 1
+                    # height: 0 if not app.is_logged_in else dp(48)
+                    # on_release:
+                        # root.nav_drawer.set_state("close")
+                        # root.manager.current = "screen_dados_pessoais"
+                # OneLineListItem:
+                    # text: "Alterar Password" if app.is_logged_in else ""
+                    # # size_hint_y: None if not app.is_logged_in else 1
+                    # height: 0 if not app.is_logged_in else dp(48)
+                    # on_release:
+                        # root.nav_drawer.set_state("close")
+                        # root.manager.current = "screen_change_password"
 
-                OneLineListItem:
-                    text: "Ementa" if app.is_logged_in else ""
-                    # size_hint_y: None if not app.is_logged_in else 1
-                    height: 0 if not app.is_logged_in else dp(48)
-                    on_release:
-                        root.nav_drawer.set_state("close")
-                        root.manager.current = "screen_ementa_utilizador"
+                # OneLineListItem:
+                    # text: "Ementa"
+                    # # size_hint_y: None if not app.is_logged_in else 1
+                    # height: 0 if not app.is_logged_in else dp(48)
+                    # on_release:
+                        # root.nav_drawer.set_state("close")
+                        # root.manager.current = "screen_ementa_utilizador"
+                
+                # OneLineListItem:
+                    # text: "Ofertas" if app.is_logged_in else ""
+                    # # size_hint_y: None if not app.is_logged_in else 1
+                    # height: 0 if not app.is_logged_in else dp(48)
+                    # on_release:
+                        # root.nav_drawer.set_state("close")
+                        # root.manager.current = "screen_pontos_oferta"
 
-                OneLineListItem:
-                    text: "QrCode" if app.is_logged_in else ""
-                    # size_hint_y: None if not app.is_logged_in else 1
-                    height: 0 if not app.is_logged_in else dp(48)
-                    on_release:
-                        root.nav_drawer.set_state("close")
-                        root.manager.current = "screen_qrcode"
+                # OneLineListItem:
+                    # text: "QrCode" if app.is_logged_in else ""
+                    # # size_hint_y: None if not app.is_logged_in else 1
+                    # height: 0 if not app.is_logged_in else dp(48)
+                    # on_release:
+                        # root.nav_drawer.set_state("close")
+                        # root.manager.current = "screen_qrcode"
                 
                 OneLineListItem:
                     text: "Inicio"
@@ -103,12 +115,12 @@
     Screen:
         MDTopAppBar:
             pos_hint: {"top": 1}
-            title: "Extreme Way"
+            # title: "Extreme Way"
             elevation: 8
             left_action_items: [["menu", lambda x: nav_drawer.set_state("open")]]
             right_action_items: [[app.login_icon, lambda x: app.toggle_login()]]
         MDNavigationLayout:
-            ScreenManager:
+            NavigationScreenManager:
                 id: screen_manager
                 ScreenInicio:
                     name: "screen_inicio"
@@ -150,8 +162,16 @@
                     size_hint: 1, 0.9
                 ScreenEmentaUtilizador:
                     name: "screen_ementa_utilizador"
-                    size_hint: 1, 0.9  # Ajuste conforme necessário
-                    
+                    size_hint: 1, 0.88  # Ajuste conforme necessário
+                ScreenPontosOferta:
+                    name: "screen_pontos_oferta"
+                    size_hint: 1, 0.88  # Ajuste conforme necessário       
+                ScreenInterfaceUtilizador:
+                    name: "screen_interface_utilizador"
+                    size_hint: 1, 0.90    
+                ScreenMovimentosPontos:
+                    name: "screen_movimentos_pontos"
+                    size_hint: 1, 0.90    
         MDNavigationDrawer:
             id: nav_drawer
             radius: (0, 16, 16, 0)
